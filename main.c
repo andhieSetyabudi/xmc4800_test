@@ -27,14 +27,18 @@ int8_t rx_buffer[64] = { 0 };
 
 int	printf (const char *fmt, ...)
 {
-	size_t len = strlen(fmt);
-	char buffer_print[256];
-	va_list args;
-	va_start(args, fmt);
-	vsnprintf(buffer_print, sizeof(buffer_print), fmt, args);
-	va_end(args);
-	size_t ret = USBD_VCOM_SendData(buffer_print, strlen(buffer_print));
-	return ret;
+	if( USBD_VCOM_Connect() == USBD_VCOM_STATUS_SUCCESS )
+	{
+		size_t len = strlen(fmt);
+		char buffer_print[256];
+		va_list args;
+		va_start(args, fmt);
+		vsnprintf(buffer_print, sizeof(buffer_print), fmt, args);
+		va_end(args);
+		size_t ret = USBD_VCOM_SendData(buffer_print, strlen(buffer_print));
+		return ret;
+	}
+	return 0;
 }
 
 int __io_putchar(int ch)
