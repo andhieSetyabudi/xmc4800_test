@@ -1,0 +1,1021 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "cmsis_os1.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .text.osThreadCreate,"ax",%progbits
+  20              	 .align 2
+  21              	 .global osThreadCreate
+  22              	 .thumb
+  23              	 .thumb_func
+  25              	osThreadCreate:
+  26              	.LFB137:
+  27              	 .file 1 "../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c"
+   1:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** /*
+   2:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * Copyright (c) 2013-2017 ARM Limited. All rights reserved.
+   3:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+   4:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+   6:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * not use this file except in compliance with the License.
+   8:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * You may obtain a copy of the License at
+   9:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+  10:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+  12:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * See the License for the specific language governing permissions and
+  16:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * limitations under the License.
+  17:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+  18:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * ----------------------------------------------------------------------
+  19:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+  20:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * $Date:        10. January 2017
+  21:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * $Revision:    V1.2
+  22:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *
+  23:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * Project:      CMSIS-RTOS API V1
+  24:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  * Title:        cmsis_os_v1.c V1 module file
+  25:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****  *---------------------------------------------------------------------------*/
+  26:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  27:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #include "CMSIS_RTOS/cmsis_rtos_conf.h"
+  28:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  29:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if defined(CMSIS_RTOS_CONFIG_IMPL_FREERTOS)
+  30:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  31:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #include <string.h>
+  32:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #include "CMSIS_RTOS/FREERTOS/Include1/cmsis_os.h"
+  33:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  34:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if (osCMSIS >= 0x20000U) && !defined(os1_Disable)
+  35:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  36:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  37:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Thread
+  38:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if !defined(os1_Disable_Thread)
+  39:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument) {
+  28              	 .loc 1 39 0
+  29              	 .cfi_startproc
+  30              	 
+  31              	 
+  32 0000 80B5     	 push {r7,lr}
+  33              	.LCFI0:
+  34              	 .cfi_def_cfa_offset 8
+  35              	 .cfi_offset 7,-8
+  36              	 .cfi_offset 14,-4
+  37 0002 82B0     	 sub sp,sp,#8
+  38              	.LCFI1:
+  39              	 .cfi_def_cfa_offset 16
+  40 0004 00AF     	 add r7,sp,#0
+  41              	.LCFI2:
+  42              	 .cfi_def_cfa_register 7
+  43 0006 7860     	 str r0,[r7,#4]
+  44 0008 3960     	 str r1,[r7]
+  40:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  41:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (thread_def == NULL) {
+  45              	 .loc 1 41 0
+  46 000a 7B68     	 ldr r3,[r7,#4]
+  47 000c 002B     	 cmp r3,#0
+  48 000e 01D1     	 bne .L2
+  42:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+  49              	 .loc 1 42 0
+  50 0010 0023     	 movs r3,#0
+  51 0012 09E0     	 b .L3
+  52              	.L2:
+  43:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+  44:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osThreadNew((osThreadFunc_t)thread_def->pthread, argument, &thread_def->attr);
+  53              	 .loc 1 44 0
+  54 0014 7B68     	 ldr r3,[r7,#4]
+  55 0016 1A68     	 ldr r2,[r3]
+  56 0018 7B68     	 ldr r3,[r7,#4]
+  57 001a 0433     	 adds r3,r3,#4
+  58 001c 1046     	 mov r0,r2
+  59 001e 3968     	 ldr r1,[r7]
+  60 0020 1A46     	 mov r2,r3
+  61 0022 FFF7FEFF 	 bl osThreadNew
+  62 0026 0346     	 mov r3,r0
+  63              	.L3:
+  45:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+  64              	 .loc 1 45 0
+  65 0028 1846     	 mov r0,r3
+  66 002a 0837     	 adds r7,r7,#8
+  67              	.LCFI3:
+  68              	 .cfi_def_cfa_offset 8
+  69 002c BD46     	 mov sp,r7
+  70              	.LCFI4:
+  71              	 .cfi_def_cfa_register 13
+  72              	 
+  73 002e 80BD     	 pop {r7,pc}
+  74              	 .cfi_endproc
+  75              	.LFE137:
+  77              	 .section .text.osSignalSet,"ax",%progbits
+  78              	 .align 2
+  79              	 .global osSignalSet
+  80              	 .thumb
+  81              	 .thumb_func
+  83              	osSignalSet:
+  84              	.LFB138:
+  46:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif
+  47:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  48:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  49:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Signals
+  50:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  51:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if !defined(os1_Disable_Signal)
+  52:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  53:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #define SignalMask ((1U<<osFeature_Signals)-1U)
+  54:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  55:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** int32_t osSignalSet (osThreadId thread_id, int32_t signals) {
+  85              	 .loc 1 55 0
+  86              	 .cfi_startproc
+  87              	 
+  88              	 
+  89 0000 80B5     	 push {r7,lr}
+  90              	.LCFI5:
+  91              	 .cfi_def_cfa_offset 8
+  92              	 .cfi_offset 7,-8
+  93              	 .cfi_offset 14,-4
+  94 0002 84B0     	 sub sp,sp,#16
+  95              	.LCFI6:
+  96              	 .cfi_def_cfa_offset 24
+  97 0004 00AF     	 add r7,sp,#0
+  98              	.LCFI7:
+  99              	 .cfi_def_cfa_register 7
+ 100 0006 7860     	 str r0,[r7,#4]
+ 101 0008 3960     	 str r1,[r7]
+  56:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t flags;
+  57:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  58:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   flags = osThreadFlagsSet(thread_id, (uint32_t)signals);
+ 102              	 .loc 1 58 0
+ 103 000a 3B68     	 ldr r3,[r7]
+ 104 000c 7868     	 ldr r0,[r7,#4]
+ 105 000e 1946     	 mov r1,r3
+ 106 0010 FFF7FEFF 	 bl osThreadFlagsSet
+ 107 0014 F860     	 str r0,[r7,#12]
+  59:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if ((flags & 0x80000000U) != 0U) {
+ 108              	 .loc 1 59 0
+ 109 0016 FB68     	 ldr r3,[r7,#12]
+ 110 0018 002B     	 cmp r3,#0
+ 111 001a 02DA     	 bge .L5
+  60:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return ((int32_t)0x80000000U);
+ 112              	 .loc 1 60 0
+ 113 001c 4FF00043 	 mov r3,#-2147483648
+ 114 0020 03E0     	 b .L6
+ 115              	.L5:
+  61:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+  62:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return ((int32_t)(flags & ~((uint32_t)signals)));
+ 116              	 .loc 1 62 0
+ 117 0022 3B68     	 ldr r3,[r7]
+ 118 0024 DA43     	 mvns r2,r3
+ 119 0026 FB68     	 ldr r3,[r7,#12]
+ 120 0028 1340     	 ands r3,r3,r2
+ 121              	.L6:
+  63:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 122              	 .loc 1 63 0
+ 123 002a 1846     	 mov r0,r3
+ 124 002c 1037     	 adds r7,r7,#16
+ 125              	.LCFI8:
+ 126              	 .cfi_def_cfa_offset 8
+ 127 002e BD46     	 mov sp,r7
+ 128              	.LCFI9:
+ 129              	 .cfi_def_cfa_register 13
+ 130              	 
+ 131 0030 80BD     	 pop {r7,pc}
+ 132              	 .cfi_endproc
+ 133              	.LFE138:
+ 135 0032 00BF     	 .section .text.osSignalClear,"ax",%progbits
+ 136              	 .align 2
+ 137              	 .global osSignalClear
+ 138              	 .thumb
+ 139              	 .thumb_func
+ 141              	osSignalClear:
+ 142              	.LFB139:
+  64:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  65:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** int32_t osSignalClear (osThreadId thread_id, int32_t signals) {
+ 143              	 .loc 1 65 0
+ 144              	 .cfi_startproc
+ 145              	 
+ 146              	 
+ 147 0000 80B5     	 push {r7,lr}
+ 148              	.LCFI10:
+ 149              	 .cfi_def_cfa_offset 8
+ 150              	 .cfi_offset 7,-8
+ 151              	 .cfi_offset 14,-4
+ 152 0002 84B0     	 sub sp,sp,#16
+ 153              	.LCFI11:
+ 154              	 .cfi_def_cfa_offset 24
+ 155 0004 00AF     	 add r7,sp,#0
+ 156              	.LCFI12:
+ 157              	 .cfi_def_cfa_register 7
+ 158 0006 7860     	 str r0,[r7,#4]
+ 159 0008 3960     	 str r1,[r7]
+  66:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t flags;
+  67:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  68:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (thread_id != osThreadGetId()) {
+ 160              	 .loc 1 68 0
+ 161 000a FFF7FEFF 	 bl osThreadGetId
+ 162 000e 0246     	 mov r2,r0
+ 163 0010 7B68     	 ldr r3,[r7,#4]
+ 164 0012 9A42     	 cmp r2,r3
+ 165 0014 02D0     	 beq .L8
+  69:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return ((int32_t)0x80000000U);
+ 166              	 .loc 1 69 0
+ 167 0016 4FF00043 	 mov r3,#-2147483648
+ 168 001a 0BE0     	 b .L9
+ 169              	.L8:
+  70:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+  71:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   flags = osThreadFlagsClear((uint32_t)signals);
+ 170              	 .loc 1 71 0
+ 171 001c 3B68     	 ldr r3,[r7]
+ 172 001e 1846     	 mov r0,r3
+ 173 0020 FFF7FEFF 	 bl osThreadFlagsClear
+ 174 0024 F860     	 str r0,[r7,#12]
+  72:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if ((flags & 0x80000000U) != 0U) {
+ 175              	 .loc 1 72 0
+ 176 0026 FB68     	 ldr r3,[r7,#12]
+ 177 0028 002B     	 cmp r3,#0
+ 178 002a 02DA     	 bge .L10
+  73:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return ((int32_t)0x80000000U);
+ 179              	 .loc 1 73 0
+ 180 002c 4FF00043 	 mov r3,#-2147483648
+ 181 0030 00E0     	 b .L9
+ 182              	.L10:
+  74:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+  75:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return ((int32_t)flags);
+ 183              	 .loc 1 75 0
+ 184 0032 FB68     	 ldr r3,[r7,#12]
+ 185              	.L9:
+  76:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 186              	 .loc 1 76 0
+ 187 0034 1846     	 mov r0,r3
+ 188 0036 1037     	 adds r7,r7,#16
+ 189              	.LCFI13:
+ 190              	 .cfi_def_cfa_offset 8
+ 191 0038 BD46     	 mov sp,r7
+ 192              	.LCFI14:
+ 193              	 .cfi_def_cfa_register 13
+ 194              	 
+ 195 003a 80BD     	 pop {r7,pc}
+ 196              	 .cfi_endproc
+ 197              	.LFE139:
+ 199              	 .section .text.osSignalWait,"ax",%progbits
+ 200              	 .align 2
+ 201              	 .global osSignalWait
+ 202              	 .thumb
+ 203              	 .thumb_func
+ 205              	osSignalWait:
+ 206              	.LFB140:
+  77:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  78:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** os_InRegs osEvent osSignalWait (int32_t signals, uint32_t millisec) {
+ 207              	 .loc 1 78 0
+ 208              	 .cfi_startproc
+ 209              	 
+ 210              	 
+ 211 0000 90B5     	 push {r4,r7,lr}
+ 212              	.LCFI15:
+ 213              	 .cfi_def_cfa_offset 12
+ 214              	 .cfi_offset 4,-12
+ 215              	 .cfi_offset 7,-8
+ 216              	 .cfi_offset 14,-4
+ 217 0002 89B0     	 sub sp,sp,#36
+ 218              	.LCFI16:
+ 219              	 .cfi_def_cfa_offset 48
+ 220 0004 00AF     	 add r7,sp,#0
+ 221              	.LCFI17:
+ 222              	 .cfi_def_cfa_register 7
+ 223 0006 F860     	 str r0,[r7,#12]
+ 224 0008 B960     	 str r1,[r7,#8]
+ 225 000a 7A60     	 str r2,[r7,#4]
+  79:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   osEvent  event;
+  80:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t flags;
+  81:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+  82:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (signals != 0) {
+ 226              	 .loc 1 82 0
+ 227 000c BB68     	 ldr r3,[r7,#8]
+ 228 000e 002B     	 cmp r3,#0
+ 229 0010 07D0     	 beq .L12
+  83:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     flags = osThreadFlagsWait((uint32_t)signals, osFlagsWaitAll, millisec);
+ 230              	 .loc 1 83 0
+ 231 0012 BB68     	 ldr r3,[r7,#8]
+ 232 0014 1846     	 mov r0,r3
+ 233 0016 0121     	 movs r1,#1
+ 234 0018 7A68     	 ldr r2,[r7,#4]
+ 235 001a FFF7FEFF 	 bl osThreadFlagsWait
+ 236 001e F861     	 str r0,[r7,#28]
+ 237 0020 06E0     	 b .L13
+ 238              	.L12:
+  84:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   } else {
+  85:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     flags = osThreadFlagsWait(SignalMask,        osFlagsWaitAny, millisec);
+ 239              	 .loc 1 85 0
+ 240 0022 6FF07F40 	 mvn r0,#-16777216
+ 241 0026 0021     	 movs r1,#0
+ 242 0028 7A68     	 ldr r2,[r7,#4]
+ 243 002a FFF7FEFF 	 bl osThreadFlagsWait
+ 244 002e F861     	 str r0,[r7,#28]
+ 245              	.L13:
+  86:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+  87:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if ((flags > 0U) && (flags < 0x80000000U)) {
+ 246              	 .loc 1 87 0
+ 247 0030 FB69     	 ldr r3,[r7,#28]
+ 248 0032 002B     	 cmp r3,#0
+ 249 0034 07D0     	 beq .L14
+ 250              	 .loc 1 87 0 is_stmt 0 discriminator 1
+ 251 0036 FB69     	 ldr r3,[r7,#28]
+ 252 0038 002B     	 cmp r3,#0
+ 253 003a 04DB     	 blt .L14
+  88:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     event.status = osEventSignal;
+ 254              	 .loc 1 88 0 is_stmt 1
+ 255 003c 0823     	 movs r3,#8
+ 256 003e 3B61     	 str r3,[r7,#16]
+  89:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     event.value.signals = (int32_t)flags;
+ 257              	 .loc 1 89 0
+ 258 0040 FB69     	 ldr r3,[r7,#28]
+ 259 0042 7B61     	 str r3,[r7,#20]
+ 260 0044 17E0     	 b .L15
+ 261              	.L14:
+  90:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   } else {
+  91:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     switch ((int32_t)flags) {
+ 262              	 .loc 1 91 0
+ 263 0046 FB69     	 ldr r3,[r7,#28]
+ 264 0048 13F1030F 	 cmn r3,#3
+ 265 004c 06D0     	 beq .L17
+ 266 004e 13F1020F 	 cmn r3,#2
+ 267 0052 06D0     	 beq .L18
+ 268 0054 13F1040F 	 cmn r3,#4
+ 269 0058 06D0     	 beq .L19
+ 270 005a 09E0     	 b .L21
+ 271              	.L17:
+  92:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       case osErrorResource:
+  93:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         event.status = osOK;
+ 272              	 .loc 1 93 0
+ 273 005c 0023     	 movs r3,#0
+ 274 005e 3B61     	 str r3,[r7,#16]
+  94:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         break;
+ 275              	 .loc 1 94 0
+ 276 0060 09E0     	 b .L15
+ 277              	.L18:
+  95:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       case osErrorTimeout:
+  96:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         event.status = osEventTimeout;
+ 278              	 .loc 1 96 0
+ 279 0062 4023     	 movs r3,#64
+ 280 0064 3B61     	 str r3,[r7,#16]
+  97:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         break;
+ 281              	 .loc 1 97 0
+ 282 0066 06E0     	 b .L15
+ 283              	.L19:
+  98:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       case osErrorParameter:
+  99:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         event.status = osErrorValue;
+ 284              	 .loc 1 99 0
+ 285 0068 6FF07E03 	 mvn r3,#126
+ 286 006c 3B61     	 str r3,[r7,#16]
+ 100:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         break;
+ 287              	 .loc 1 100 0
+ 288 006e 02E0     	 b .L15
+ 289              	.L21:
+ 101:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       default:
+ 102:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         event.status = (osStatus)flags;
+ 290              	 .loc 1 102 0
+ 291 0070 FB69     	 ldr r3,[r7,#28]
+ 292 0072 3B61     	 str r3,[r7,#16]
+ 103:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****         break;
+ 293              	 .loc 1 103 0
+ 294 0074 00BF     	 nop
+ 295              	.L15:
+ 104:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     }
+ 105:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 106:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return event;
+ 296              	 .loc 1 106 0
+ 297 0076 FB68     	 ldr r3,[r7,#12]
+ 298 0078 1C46     	 mov r4,r3
+ 299 007a 07F11003 	 add r3,r7,#16
+ 300 007e 93E80700 	 ldmia r3,{r0,r1,r2}
+ 301 0082 84E80700 	 stmia r4,{r0,r1,r2}
+ 107:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 302              	 .loc 1 107 0
+ 303 0086 F868     	 ldr r0,[r7,#12]
+ 304 0088 2437     	 adds r7,r7,#36
+ 305              	.LCFI18:
+ 306              	 .cfi_def_cfa_offset 12
+ 307 008a BD46     	 mov sp,r7
+ 308              	.LCFI19:
+ 309              	 .cfi_def_cfa_register 13
+ 310              	 
+ 311 008c 90BD     	 pop {r4,r7,pc}
+ 312              	 .cfi_endproc
+ 313              	.LFE140:
+ 315 008e 00BF     	 .section .text.osTimerCreate,"ax",%progbits
+ 316              	 .align 2
+ 317              	 .global osTimerCreate
+ 318              	 .thumb
+ 319              	 .thumb_func
+ 321              	osTimerCreate:
+ 322              	.LFB141:
+ 108:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 109:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif  // Signal
+ 110:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 111:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 112:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Timer
+ 113:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if !defined(os1_Disable_Timer)
+ 114:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osTimerId osTimerCreate (const osTimerDef_t *timer_def, os_timer_type type, void *argument) {
+ 323              	 .loc 1 114 0
+ 324              	 .cfi_startproc
+ 325              	 
+ 326              	 
+ 327 0000 80B5     	 push {r7,lr}
+ 328              	.LCFI20:
+ 329              	 .cfi_def_cfa_offset 8
+ 330              	 .cfi_offset 7,-8
+ 331              	 .cfi_offset 14,-4
+ 332 0002 84B0     	 sub sp,sp,#16
+ 333              	.LCFI21:
+ 334              	 .cfi_def_cfa_offset 24
+ 335 0004 00AF     	 add r7,sp,#0
+ 336              	.LCFI22:
+ 337              	 .cfi_def_cfa_register 7
+ 338 0006 F860     	 str r0,[r7,#12]
+ 339 0008 0B46     	 mov r3,r1
+ 340 000a 7A60     	 str r2,[r7,#4]
+ 341 000c FB72     	 strb r3,[r7,#11]
+ 115:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 116:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (timer_def == NULL) {
+ 342              	 .loc 1 116 0
+ 343 000e FB68     	 ldr r3,[r7,#12]
+ 344 0010 002B     	 cmp r3,#0
+ 345 0012 01D1     	 bne .L23
+ 117:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 346              	 .loc 1 117 0
+ 347 0014 0023     	 movs r3,#0
+ 348 0016 0AE0     	 b .L24
+ 349              	.L23:
+ 118:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 119:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osTimerNew((osTimerFunc_t)timer_def->ptimer, type, argument, &timer_def->attr);
+ 350              	 .loc 1 119 0
+ 351 0018 FB68     	 ldr r3,[r7,#12]
+ 352 001a 1968     	 ldr r1,[r3]
+ 353 001c FB68     	 ldr r3,[r7,#12]
+ 354 001e 0433     	 adds r3,r3,#4
+ 355 0020 FA7A     	 ldrb r2,[r7,#11]
+ 356 0022 0846     	 mov r0,r1
+ 357 0024 1146     	 mov r1,r2
+ 358 0026 7A68     	 ldr r2,[r7,#4]
+ 359 0028 FFF7FEFF 	 bl osTimerNew
+ 360 002c 0346     	 mov r3,r0
+ 361              	.L24:
+ 120:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 362              	 .loc 1 120 0
+ 363 002e 1846     	 mov r0,r3
+ 364 0030 1037     	 adds r7,r7,#16
+ 365              	.LCFI23:
+ 366              	 .cfi_def_cfa_offset 8
+ 367 0032 BD46     	 mov sp,r7
+ 368              	.LCFI24:
+ 369              	 .cfi_def_cfa_register 13
+ 370              	 
+ 371 0034 80BD     	 pop {r7,pc}
+ 372              	 .cfi_endproc
+ 373              	.LFE141:
+ 375 0036 00BF     	 .section .text.osMutexCreate,"ax",%progbits
+ 376              	 .align 2
+ 377              	 .global osMutexCreate
+ 378              	 .thumb
+ 379              	 .thumb_func
+ 381              	osMutexCreate:
+ 382              	.LFB142:
+ 121:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif
+ 122:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 123:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 124:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Mutex
+ 125:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if !defined(os1_Disable_Mutex)
+ 126:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osMutexId osMutexCreate (const osMutexDef_t *mutex_def) {
+ 383              	 .loc 1 126 0
+ 384              	 .cfi_startproc
+ 385              	 
+ 386              	 
+ 387 0000 80B5     	 push {r7,lr}
+ 388              	.LCFI25:
+ 389              	 .cfi_def_cfa_offset 8
+ 390              	 .cfi_offset 7,-8
+ 391              	 .cfi_offset 14,-4
+ 392 0002 82B0     	 sub sp,sp,#8
+ 393              	.LCFI26:
+ 394              	 .cfi_def_cfa_offset 16
+ 395 0004 00AF     	 add r7,sp,#0
+ 396              	.LCFI27:
+ 397              	 .cfi_def_cfa_register 7
+ 398 0006 7860     	 str r0,[r7,#4]
+ 127:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 128:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (mutex_def == NULL) {
+ 399              	 .loc 1 128 0
+ 400 0008 7B68     	 ldr r3,[r7,#4]
+ 401 000a 002B     	 cmp r3,#0
+ 402 000c 01D1     	 bne .L26
+ 129:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 403              	 .loc 1 129 0
+ 404 000e 0023     	 movs r3,#0
+ 405 0010 03E0     	 b .L27
+ 406              	.L26:
+ 130:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 131:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMutexNew(mutex_def);
+ 407              	 .loc 1 131 0
+ 408 0012 7868     	 ldr r0,[r7,#4]
+ 409 0014 FFF7FEFF 	 bl osMutexNew
+ 410 0018 0346     	 mov r3,r0
+ 411              	.L27:
+ 132:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 412              	 .loc 1 132 0
+ 413 001a 1846     	 mov r0,r3
+ 414 001c 0837     	 adds r7,r7,#8
+ 415              	.LCFI28:
+ 416              	 .cfi_def_cfa_offset 8
+ 417 001e BD46     	 mov sp,r7
+ 418              	.LCFI29:
+ 419              	 .cfi_def_cfa_register 13
+ 420              	 
+ 421 0020 80BD     	 pop {r7,pc}
+ 422              	 .cfi_endproc
+ 423              	.LFE142:
+ 425 0022 00BF     	 .section .text.osSemaphoreCreate,"ax",%progbits
+ 426              	 .align 2
+ 427              	 .global osSemaphoreCreate
+ 428              	 .thumb
+ 429              	 .thumb_func
+ 431              	osSemaphoreCreate:
+ 432              	.LFB143:
+ 133:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif
+ 134:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 135:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 136:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Semaphore
+ 137:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 138:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if (defined (osFeature_Semaphore) && (osFeature_Semaphore != 0U)) && !defined(os1_Disable_Semaphor
+ 139:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 140:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osSemaphoreId osSemaphoreCreate (const osSemaphoreDef_t *semaphore_def, int32_t count) {
+ 433              	 .loc 1 140 0
+ 434              	 .cfi_startproc
+ 435              	 
+ 436              	 
+ 437 0000 80B5     	 push {r7,lr}
+ 438              	.LCFI30:
+ 439              	 .cfi_def_cfa_offset 8
+ 440              	 .cfi_offset 7,-8
+ 441              	 .cfi_offset 14,-4
+ 442 0002 82B0     	 sub sp,sp,#8
+ 443              	.LCFI31:
+ 444              	 .cfi_def_cfa_offset 16
+ 445 0004 00AF     	 add r7,sp,#0
+ 446              	.LCFI32:
+ 447              	 .cfi_def_cfa_register 7
+ 448 0006 7860     	 str r0,[r7,#4]
+ 449 0008 3960     	 str r1,[r7]
+ 141:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 142:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (semaphore_def == NULL) {
+ 450              	 .loc 1 142 0
+ 451 000a 7B68     	 ldr r3,[r7,#4]
+ 452 000c 002B     	 cmp r3,#0
+ 453 000e 01D1     	 bne .L29
+ 143:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 454              	 .loc 1 143 0
+ 455 0010 0023     	 movs r3,#0
+ 456 0012 07E0     	 b .L30
+ 457              	.L29:
+ 144:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 145:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osSemaphoreNew((uint32_t)count, (uint32_t)count, semaphore_def);
+ 458              	 .loc 1 145 0
+ 459 0014 3A68     	 ldr r2,[r7]
+ 460 0016 3B68     	 ldr r3,[r7]
+ 461 0018 1046     	 mov r0,r2
+ 462 001a 1946     	 mov r1,r3
+ 463 001c 7A68     	 ldr r2,[r7,#4]
+ 464 001e FFF7FEFF 	 bl osSemaphoreNew
+ 465 0022 0346     	 mov r3,r0
+ 466              	.L30:
+ 146:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 467              	 .loc 1 146 0
+ 468 0024 1846     	 mov r0,r3
+ 469 0026 0837     	 adds r7,r7,#8
+ 470              	.LCFI33:
+ 471              	 .cfi_def_cfa_offset 8
+ 472 0028 BD46     	 mov sp,r7
+ 473              	.LCFI34:
+ 474              	 .cfi_def_cfa_register 13
+ 475              	 
+ 476 002a 80BD     	 pop {r7,pc}
+ 477              	 .cfi_endproc
+ 478              	.LFE143:
+ 480              	 .section .text.osSemaphoreWait,"ax",%progbits
+ 481              	 .align 2
+ 482              	 .global osSemaphoreWait
+ 483              	 .thumb
+ 484              	 .thumb_func
+ 486              	osSemaphoreWait:
+ 487              	.LFB144:
+ 147:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 148:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** int32_t osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec) {
+ 488              	 .loc 1 148 0
+ 489              	 .cfi_startproc
+ 490              	 
+ 491              	 
+ 492 0000 80B5     	 push {r7,lr}
+ 493              	.LCFI35:
+ 494              	 .cfi_def_cfa_offset 8
+ 495              	 .cfi_offset 7,-8
+ 496              	 .cfi_offset 14,-4
+ 497 0002 84B0     	 sub sp,sp,#16
+ 498              	.LCFI36:
+ 499              	 .cfi_def_cfa_offset 24
+ 500 0004 00AF     	 add r7,sp,#0
+ 501              	.LCFI37:
+ 502              	 .cfi_def_cfa_register 7
+ 503 0006 7860     	 str r0,[r7,#4]
+ 504 0008 3960     	 str r1,[r7]
+ 149:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   osStatus_t status;
+ 150:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t   count;
+ 151:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 152:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   status = osSemaphoreAcquire(semaphore_id, millisec);
+ 505              	 .loc 1 152 0
+ 506 000a 7868     	 ldr r0,[r7,#4]
+ 507 000c 3968     	 ldr r1,[r7]
+ 508 000e FFF7FEFF 	 bl osSemaphoreAcquire
+ 509 0012 F860     	 str r0,[r7,#12]
+ 153:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   switch (status) {
+ 510              	 .loc 1 153 0
+ 511 0014 FB68     	 ldr r3,[r7,#12]
+ 512 0016 13F1030F 	 cmn r3,#3
+ 513 001a 0EDB     	 blt .L37
+ 514 001c 13F1020F 	 cmn r3,#2
+ 515 0020 09DD     	 ble .L33
+ 516 0022 002B     	 cmp r3,#0
+ 517 0024 00D0     	 beq .L34
+ 154:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osOK:
+ 155:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       count = osSemaphoreGetCount(semaphore_id);
+ 156:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       return ((int32_t)count + 1);
+ 157:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osErrorResource:
+ 158:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osErrorTimeout:
+ 159:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       return 0;
+ 160:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     default:
+ 161:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       break;
+ 518              	 .loc 1 161 0
+ 519 0026 08E0     	 b .L37
+ 520              	.L34:
+ 155:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       return ((int32_t)count + 1);
+ 521              	 .loc 1 155 0
+ 522 0028 7868     	 ldr r0,[r7,#4]
+ 523 002a FFF7FEFF 	 bl osSemaphoreGetCount
+ 524 002e B860     	 str r0,[r7,#8]
+ 156:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osErrorResource:
+ 525              	 .loc 1 156 0
+ 526 0030 BB68     	 ldr r3,[r7,#8]
+ 527 0032 0133     	 adds r3,r3,#1
+ 528 0034 04E0     	 b .L35
+ 529              	.L33:
+ 159:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     default:
+ 530              	 .loc 1 159 0
+ 531 0036 0023     	 movs r3,#0
+ 532 0038 02E0     	 b .L35
+ 533              	.L37:
+ 534              	 .loc 1 161 0
+ 535 003a 00BF     	 nop
+ 162:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 163:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return -1;
+ 536              	 .loc 1 163 0
+ 537 003c 4FF0FF33 	 mov r3,#-1
+ 538              	.L35:
+ 164:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 539              	 .loc 1 164 0
+ 540 0040 1846     	 mov r0,r3
+ 541 0042 1037     	 adds r7,r7,#16
+ 542              	.LCFI38:
+ 543              	 .cfi_def_cfa_offset 8
+ 544 0044 BD46     	 mov sp,r7
+ 545              	.LCFI39:
+ 546              	 .cfi_def_cfa_register 13
+ 547              	 
+ 548 0046 80BD     	 pop {r7,pc}
+ 549              	 .cfi_endproc
+ 550              	.LFE144:
+ 552              	 .section .text.osMessageCreate,"ax",%progbits
+ 553              	 .align 2
+ 554              	 .global osMessageCreate
+ 555              	 .thumb
+ 556              	 .thumb_func
+ 558              	osMessageCreate:
+ 559              	.LFB145:
+ 165:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 166:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif  // Semaphore
+ 167:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 168:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 169:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Memory Pool
+ 170:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 171:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if (defined(osFeature_Pool) && (osFeature_Pool != 0))&& !defined(os1_Disable_Pool)
+ 172:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 173:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osPoolId osPoolCreate (const osPoolDef_t *pool_def) {
+ 174:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 175:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (pool_def == NULL) {
+ 176:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 177:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 178:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMemoryPoolNew(pool_def->pool_sz, pool_def->item_sz, &pool_def->attr);
+ 179:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 180:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 181:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** void *osPoolAlloc (osPoolId pool_id) {
+ 182:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMemoryPoolAlloc(pool_id, 0U);
+ 183:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 184:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 185:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** void *osPoolCAlloc (osPoolId pool_id) {
+ 186:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   void    *block;
+ 187:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t block_size;
+ 188:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 189:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   block_size = osMemoryPoolGetBlockSize((osMemoryPoolId_t)pool_id);
+ 190:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (block_size == 0U) {
+ 191:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 192:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 193:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   block = osMemoryPoolAlloc(pool_id, 0U);
+ 194:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (block != NULL) {
+ 195:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     memset(block, 0, block_size);
+ 196:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 197:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return block;
+ 198:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 199:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 200:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osStatus osPoolFree (osPoolId pool_id, void *block) {
+ 201:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMemoryPoolFree(pool_id, block);
+ 202:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 203:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 204:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #endif  // Memory Pool
+ 205:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 206:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 207:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** // Message Queue
+ 208:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 209:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** #if (defined(osFeature_MessageQ) && (osFeature_MessageQ != 0)) && !defined(os1_Disable_MessageQ)
+ 210:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 211:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osMessageQId osMessageCreate (const osMessageQDef_t *queue_def, osThreadId thread_id) {
+ 560              	 .loc 1 211 0
+ 561              	 .cfi_startproc
+ 562              	 
+ 563              	 
+ 564 0000 80B5     	 push {r7,lr}
+ 565              	.LCFI40:
+ 566              	 .cfi_def_cfa_offset 8
+ 567              	 .cfi_offset 7,-8
+ 568              	 .cfi_offset 14,-4
+ 569 0002 82B0     	 sub sp,sp,#8
+ 570              	.LCFI41:
+ 571              	 .cfi_def_cfa_offset 16
+ 572 0004 00AF     	 add r7,sp,#0
+ 573              	.LCFI42:
+ 574              	 .cfi_def_cfa_register 7
+ 575 0006 7860     	 str r0,[r7,#4]
+ 576 0008 3960     	 str r1,[r7]
+ 212:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   (void)thread_id;
+ 213:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 214:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   if (queue_def == NULL) {
+ 577              	 .loc 1 214 0
+ 578 000a 7B68     	 ldr r3,[r7,#4]
+ 579 000c 002B     	 cmp r3,#0
+ 580 000e 01D1     	 bne .L39
+ 215:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     return NULL;
+ 581              	 .loc 1 215 0
+ 582 0010 0023     	 movs r3,#0
+ 583 0012 09E0     	 b .L40
+ 584              	.L39:
+ 216:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 217:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMessageQueueNew(queue_def->queue_sz, sizeof(uint32_t), &queue_def->attr);
+ 585              	 .loc 1 217 0
+ 586 0014 7B68     	 ldr r3,[r7,#4]
+ 587 0016 1A68     	 ldr r2,[r3]
+ 588 0018 7B68     	 ldr r3,[r7,#4]
+ 589 001a 0433     	 adds r3,r3,#4
+ 590 001c 1046     	 mov r0,r2
+ 591 001e 0421     	 movs r1,#4
+ 592 0020 1A46     	 mov r2,r3
+ 593 0022 FFF7FEFF 	 bl osMessageQueueNew
+ 594 0026 0346     	 mov r3,r0
+ 595              	.L40:
+ 218:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 596              	 .loc 1 218 0
+ 597 0028 1846     	 mov r0,r3
+ 598 002a 0837     	 adds r7,r7,#8
+ 599              	.LCFI43:
+ 600              	 .cfi_def_cfa_offset 8
+ 601 002c BD46     	 mov sp,r7
+ 602              	.LCFI44:
+ 603              	 .cfi_def_cfa_register 13
+ 604              	 
+ 605 002e 80BD     	 pop {r7,pc}
+ 606              	 .cfi_endproc
+ 607              	.LFE145:
+ 609              	 .section .text.osMessagePut,"ax",%progbits
+ 610              	 .align 2
+ 611              	 .global osMessagePut
+ 612              	 .thumb
+ 613              	 .thumb_func
+ 615              	osMessagePut:
+ 616              	.LFB146:
+ 219:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 220:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** osStatus osMessagePut (osMessageQId queue_id, uint32_t info, uint32_t millisec) {
+ 617              	 .loc 1 220 0
+ 618              	 .cfi_startproc
+ 619              	 
+ 620              	 
+ 621 0000 80B5     	 push {r7,lr}
+ 622              	.LCFI45:
+ 623              	 .cfi_def_cfa_offset 8
+ 624              	 .cfi_offset 7,-8
+ 625              	 .cfi_offset 14,-4
+ 626 0002 84B0     	 sub sp,sp,#16
+ 627              	.LCFI46:
+ 628              	 .cfi_def_cfa_offset 24
+ 629 0004 00AF     	 add r7,sp,#0
+ 630              	.LCFI47:
+ 631              	 .cfi_def_cfa_register 7
+ 632 0006 F860     	 str r0,[r7,#12]
+ 633 0008 B960     	 str r1,[r7,#8]
+ 634 000a 7A60     	 str r2,[r7,#4]
+ 221:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return osMessageQueuePut(queue_id, &info, 0U, millisec);
+ 635              	 .loc 1 221 0
+ 636 000c 07F10803 	 add r3,r7,#8
+ 637 0010 F868     	 ldr r0,[r7,#12]
+ 638 0012 1946     	 mov r1,r3
+ 639 0014 0022     	 movs r2,#0
+ 640 0016 7B68     	 ldr r3,[r7,#4]
+ 641 0018 FFF7FEFF 	 bl osMessageQueuePut
+ 642 001c 0346     	 mov r3,r0
+ 222:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 643              	 .loc 1 222 0
+ 644 001e 1846     	 mov r0,r3
+ 645 0020 1037     	 adds r7,r7,#16
+ 646              	.LCFI48:
+ 647              	 .cfi_def_cfa_offset 8
+ 648 0022 BD46     	 mov sp,r7
+ 649              	.LCFI49:
+ 650              	 .cfi_def_cfa_register 13
+ 651              	 
+ 652 0024 80BD     	 pop {r7,pc}
+ 653              	 .cfi_endproc
+ 654              	.LFE146:
+ 656 0026 00BF     	 .section .text.osMessageGet,"ax",%progbits
+ 657              	 .align 2
+ 658              	 .global osMessageGet
+ 659              	 .thumb
+ 660              	 .thumb_func
+ 662              	osMessageGet:
+ 663              	.LFB147:
+ 223:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 224:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** os_InRegs osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec) {
+ 664              	 .loc 1 224 0
+ 665              	 .cfi_startproc
+ 666              	 
+ 667              	 
+ 668 0000 90B5     	 push {r4,r7,lr}
+ 669              	.LCFI50:
+ 670              	 .cfi_def_cfa_offset 12
+ 671              	 .cfi_offset 4,-12
+ 672              	 .cfi_offset 7,-8
+ 673              	 .cfi_offset 14,-4
+ 674 0002 8BB0     	 sub sp,sp,#44
+ 675              	.LCFI51:
+ 676              	 .cfi_def_cfa_offset 56
+ 677 0004 00AF     	 add r7,sp,#0
+ 678              	.LCFI52:
+ 679              	 .cfi_def_cfa_register 7
+ 680 0006 F860     	 str r0,[r7,#12]
+ 681 0008 B960     	 str r1,[r7,#8]
+ 682 000a 7A60     	 str r2,[r7,#4]
+ 225:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   osStatus_t status;
+ 226:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   osEvent    event;
+ 227:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   uint32_t   message;
+ 228:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** 
+ 229:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   status = osMessageQueueGet(queue_id, &message, NULL, millisec);
+ 683              	 .loc 1 229 0
+ 684 000c 07F11403 	 add r3,r7,#20
+ 685 0010 B868     	 ldr r0,[r7,#8]
+ 686 0012 1946     	 mov r1,r3
+ 687 0014 0022     	 movs r2,#0
+ 688 0016 7B68     	 ldr r3,[r7,#4]
+ 689 0018 FFF7FEFF 	 bl osMessageQueueGet
+ 690 001c 7862     	 str r0,[r7,#36]
+ 230:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   switch (status) {
+ 691              	 .loc 1 230 0
+ 692 001e 7B6A     	 ldr r3,[r7,#36]
+ 693 0020 13F1020F 	 cmn r3,#2
+ 694 0024 0DD0     	 beq .L45
+ 695 0026 002B     	 cmp r3,#0
+ 696 0028 03D0     	 beq .L46
+ 697 002a 13F1030F 	 cmn r3,#3
+ 698 002e 05D0     	 beq .L47
+ 699 0030 0AE0     	 b .L50
+ 700              	.L46:
+ 231:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osOK:
+ 232:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       event.status = osEventMessage;
+ 701              	 .loc 1 232 0
+ 702 0032 1023     	 movs r3,#16
+ 703 0034 BB61     	 str r3,[r7,#24]
+ 233:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       event.value.v = message;
+ 704              	 .loc 1 233 0
+ 705 0036 7B69     	 ldr r3,[r7,#20]
+ 706 0038 FB61     	 str r3,[r7,#28]
+ 234:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       break;
+ 707              	 .loc 1 234 0
+ 708 003a 08E0     	 b .L48
+ 709              	.L47:
+ 235:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osErrorResource:
+ 236:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       event.status = osOK;
+ 710              	 .loc 1 236 0
+ 711 003c 0023     	 movs r3,#0
+ 712 003e BB61     	 str r3,[r7,#24]
+ 237:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       break;
+ 713              	 .loc 1 237 0
+ 714 0040 05E0     	 b .L48
+ 715              	.L45:
+ 238:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     case osErrorTimeout:
+ 239:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       event.status = osEventTimeout;
+ 716              	 .loc 1 239 0
+ 717 0042 4023     	 movs r3,#64
+ 718 0044 BB61     	 str r3,[r7,#24]
+ 240:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       break;
+ 719              	 .loc 1 240 0
+ 720 0046 02E0     	 b .L48
+ 721              	.L50:
+ 241:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****     default:
+ 242:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       event.status = status;
+ 722              	 .loc 1 242 0
+ 723 0048 7B6A     	 ldr r3,[r7,#36]
+ 724 004a BB61     	 str r3,[r7,#24]
+ 243:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****       break;
+ 725              	 .loc 1 243 0
+ 726 004c 00BF     	 nop
+ 727              	.L48:
+ 244:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   }
+ 245:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c ****   return event;
+ 728              	 .loc 1 245 0
+ 729 004e FB68     	 ldr r3,[r7,#12]
+ 730 0050 1C46     	 mov r4,r3
+ 731 0052 07F11803 	 add r3,r7,#24
+ 732 0056 93E80700 	 ldmia r3,{r0,r1,r2}
+ 733 005a 84E80700 	 stmia r4,{r0,r1,r2}
+ 246:../Dave/Generated/CMSIS_RTOS/FREERTOS/Source/cmsis_os1.c **** }
+ 734              	 .loc 1 246 0
+ 735 005e F868     	 ldr r0,[r7,#12]
+ 736 0060 2C37     	 adds r7,r7,#44
+ 737              	.LCFI53:
+ 738              	 .cfi_def_cfa_offset 12
+ 739 0062 BD46     	 mov sp,r7
+ 740              	.LCFI54:
+ 741              	 .cfi_def_cfa_register 13
+ 742              	 
+ 743 0064 90BD     	 pop {r4,r7,pc}
+ 744              	 .cfi_endproc
+ 745              	.LFE147:
+ 747 0066 00BF     	 .text
+ 748              	.Letext0:
+ 749              	 .file 2 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 750              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 751              	 .file 4 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/CMSIS_RTOS/FREERTOS/Include/cmsis_os2.h"
+ 752              	 .file 5 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/CMSIS_RTOS/FREERTOS/Include1/cmsis_os.h"
+ 753              	 .file 6 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 754              	 .file 7 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 cmsis_os1.c
+    {standard input}:20     .text.osThreadCreate:00000000 $t
+    {standard input}:25     .text.osThreadCreate:00000000 osThreadCreate
+    {standard input}:78     .text.osSignalSet:00000000 $t
+    {standard input}:83     .text.osSignalSet:00000000 osSignalSet
+    {standard input}:136    .text.osSignalClear:00000000 $t
+    {standard input}:141    .text.osSignalClear:00000000 osSignalClear
+    {standard input}:200    .text.osSignalWait:00000000 $t
+    {standard input}:205    .text.osSignalWait:00000000 osSignalWait
+    {standard input}:316    .text.osTimerCreate:00000000 $t
+    {standard input}:321    .text.osTimerCreate:00000000 osTimerCreate
+    {standard input}:376    .text.osMutexCreate:00000000 $t
+    {standard input}:381    .text.osMutexCreate:00000000 osMutexCreate
+    {standard input}:426    .text.osSemaphoreCreate:00000000 $t
+    {standard input}:431    .text.osSemaphoreCreate:00000000 osSemaphoreCreate
+    {standard input}:481    .text.osSemaphoreWait:00000000 $t
+    {standard input}:486    .text.osSemaphoreWait:00000000 osSemaphoreWait
+    {standard input}:553    .text.osMessageCreate:00000000 $t
+    {standard input}:558    .text.osMessageCreate:00000000 osMessageCreate
+    {standard input}:610    .text.osMessagePut:00000000 $t
+    {standard input}:615    .text.osMessagePut:00000000 osMessagePut
+    {standard input}:657    .text.osMessageGet:00000000 $t
+    {standard input}:662    .text.osMessageGet:00000000 osMessageGet
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+osThreadNew
+osThreadFlagsSet
+osThreadGetId
+osThreadFlagsClear
+osThreadFlagsWait
+osTimerNew
+osMutexNew
+osSemaphoreNew
+osSemaphoreAcquire
+osSemaphoreGetCount
+osMessageQueueNew
+osMessageQueuePut
+osMessageQueueGet

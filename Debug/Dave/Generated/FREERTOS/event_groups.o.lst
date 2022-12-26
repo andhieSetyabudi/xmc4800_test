@@ -1,0 +1,2651 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "event_groups.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .text.xEventGroupCreateStatic,"ax",%progbits
+  20              	 .align 2
+  21              	 .global xEventGroupCreateStatic
+  22              	 .thumb
+  23              	 .thumb_func
+  25              	xEventGroupCreateStatic:
+  26              	.LFB137:
+  27              	 .file 1 "../Dave/Generated/FREERTOS/event_groups.c"
+   1:../Dave/Generated/FREERTOS/event_groups.c **** /*
+   2:../Dave/Generated/FREERTOS/event_groups.c ****  * FreeRTOS Kernel V10.4.3
+   3:../Dave/Generated/FREERTOS/event_groups.c ****  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+   4:../Dave/Generated/FREERTOS/event_groups.c ****  *
+   5:../Dave/Generated/FREERTOS/event_groups.c ****  * Permission is hereby granted, free of charge, to any person obtaining a copy of
+   6:../Dave/Generated/FREERTOS/event_groups.c ****  * this software and associated documentation files (the "Software"), to deal in
+   7:../Dave/Generated/FREERTOS/event_groups.c ****  * the Software without restriction, including without limitation the rights to
+   8:../Dave/Generated/FREERTOS/event_groups.c ****  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+   9:../Dave/Generated/FREERTOS/event_groups.c ****  * the Software, and to permit persons to whom the Software is furnished to do so,
+  10:../Dave/Generated/FREERTOS/event_groups.c ****  * subject to the following conditions:
+  11:../Dave/Generated/FREERTOS/event_groups.c ****  *
+  12:../Dave/Generated/FREERTOS/event_groups.c ****  * The above copyright notice and this permission notice shall be included in all
+  13:../Dave/Generated/FREERTOS/event_groups.c ****  * copies or substantial portions of the Software.
+  14:../Dave/Generated/FREERTOS/event_groups.c ****  *
+  15:../Dave/Generated/FREERTOS/event_groups.c ****  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  16:../Dave/Generated/FREERTOS/event_groups.c ****  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+  17:../Dave/Generated/FREERTOS/event_groups.c ****  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  18:../Dave/Generated/FREERTOS/event_groups.c ****  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+  19:../Dave/Generated/FREERTOS/event_groups.c ****  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  20:../Dave/Generated/FREERTOS/event_groups.c ****  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  21:../Dave/Generated/FREERTOS/event_groups.c ****  *
+  22:../Dave/Generated/FREERTOS/event_groups.c ****  * https://www.FreeRTOS.org
+  23:../Dave/Generated/FREERTOS/event_groups.c ****  * https://github.com/FreeRTOS
+  24:../Dave/Generated/FREERTOS/event_groups.c ****  *
+  25:../Dave/Generated/FREERTOS/event_groups.c ****  */
+  26:../Dave/Generated/FREERTOS/event_groups.c **** 
+  27:../Dave/Generated/FREERTOS/event_groups.c **** /* Standard includes. */
+  28:../Dave/Generated/FREERTOS/event_groups.c **** #include <stdlib.h>
+  29:../Dave/Generated/FREERTOS/event_groups.c **** 
+  30:../Dave/Generated/FREERTOS/event_groups.c **** /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
+  31:../Dave/Generated/FREERTOS/event_groups.c ****  * all the API functions to use the MPU wrappers.  That should only be done when
+  32:../Dave/Generated/FREERTOS/event_groups.c ****  * task.h is included from an application file. */
+  33:../Dave/Generated/FREERTOS/event_groups.c **** #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+  34:../Dave/Generated/FREERTOS/event_groups.c **** 
+  35:../Dave/Generated/FREERTOS/event_groups.c **** /* FreeRTOS includes. */
+  36:../Dave/Generated/FREERTOS/event_groups.c **** #include "FreeRTOS.h"
+  37:../Dave/Generated/FREERTOS/event_groups.c **** #include "task.h"
+  38:../Dave/Generated/FREERTOS/event_groups.c **** #include "timers.h"
+  39:../Dave/Generated/FREERTOS/event_groups.c **** #include "event_groups.h"
+  40:../Dave/Generated/FREERTOS/event_groups.c **** 
+  41:../Dave/Generated/FREERTOS/event_groups.c **** /* Lint e961, e750 and e9021 are suppressed as a MISRA exception justified
+  42:../Dave/Generated/FREERTOS/event_groups.c ****  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
+  43:../Dave/Generated/FREERTOS/event_groups.c ****  * for the header files above, but not in this file, in order to generate the
+  44:../Dave/Generated/FREERTOS/event_groups.c ****  * correct privileged Vs unprivileged linkage and placement. */
+  45:../Dave/Generated/FREERTOS/event_groups.c **** #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021 See comment above. */
+  46:../Dave/Generated/FREERTOS/event_groups.c **** 
+  47:../Dave/Generated/FREERTOS/event_groups.c **** /* The following bit fields convey control information in a task's event list
+  48:../Dave/Generated/FREERTOS/event_groups.c ****  * item value.  It is important they don't clash with the
+  49:../Dave/Generated/FREERTOS/event_groups.c ****  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
+  50:../Dave/Generated/FREERTOS/event_groups.c **** #if configUSE_16_BIT_TICKS == 1
+  51:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventCLEAR_EVENTS_ON_EXIT_BIT    0x0100U
+  52:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventUNBLOCKED_DUE_TO_BIT_SET    0x0200U
+  53:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventWAIT_FOR_ALL_BITS           0x0400U
+  54:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventEVENT_BITS_CONTROL_BYTES    0xff00U
+  55:../Dave/Generated/FREERTOS/event_groups.c **** #else
+  56:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventCLEAR_EVENTS_ON_EXIT_BIT    0x01000000UL
+  57:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventUNBLOCKED_DUE_TO_BIT_SET    0x02000000UL
+  58:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventWAIT_FOR_ALL_BITS           0x04000000UL
+  59:../Dave/Generated/FREERTOS/event_groups.c ****     #define eventEVENT_BITS_CONTROL_BYTES    0xff000000UL
+  60:../Dave/Generated/FREERTOS/event_groups.c **** #endif
+  61:../Dave/Generated/FREERTOS/event_groups.c **** 
+  62:../Dave/Generated/FREERTOS/event_groups.c **** typedef struct EventGroupDef_t
+  63:../Dave/Generated/FREERTOS/event_groups.c **** {
+  64:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxEventBits;
+  65:../Dave/Generated/FREERTOS/event_groups.c ****     List_t xTasksWaitingForBits; /*< List of tasks waiting for a bit to be set. */
+  66:../Dave/Generated/FREERTOS/event_groups.c **** 
+  67:../Dave/Generated/FREERTOS/event_groups.c ****     #if ( configUSE_TRACE_FACILITY == 1 )
+  68:../Dave/Generated/FREERTOS/event_groups.c ****         UBaseType_t uxEventGroupNumber;
+  69:../Dave/Generated/FREERTOS/event_groups.c ****     #endif
+  70:../Dave/Generated/FREERTOS/event_groups.c **** 
+  71:../Dave/Generated/FREERTOS/event_groups.c ****     #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+  72:../Dave/Generated/FREERTOS/event_groups.c ****         uint8_t ucStaticallyAllocated; /*< Set to pdTRUE if the event group is statically allocated
+  73:../Dave/Generated/FREERTOS/event_groups.c ****     #endif
+  74:../Dave/Generated/FREERTOS/event_groups.c **** } EventGroup_t;
+  75:../Dave/Generated/FREERTOS/event_groups.c **** 
+  76:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+  77:../Dave/Generated/FREERTOS/event_groups.c **** 
+  78:../Dave/Generated/FREERTOS/event_groups.c **** /*
+  79:../Dave/Generated/FREERTOS/event_groups.c ****  * Test the bits set in uxCurrentEventBits to see if the wait condition is met.
+  80:../Dave/Generated/FREERTOS/event_groups.c ****  * The wait condition is defined by xWaitForAllBits.  If xWaitForAllBits is
+  81:../Dave/Generated/FREERTOS/event_groups.c ****  * pdTRUE then the wait condition is met if all the bits set in uxBitsToWaitFor
+  82:../Dave/Generated/FREERTOS/event_groups.c ****  * are also set in uxCurrentEventBits.  If xWaitForAllBits is pdFALSE then the
+  83:../Dave/Generated/FREERTOS/event_groups.c ****  * wait condition is met if any of the bits set in uxBitsToWait for are also set
+  84:../Dave/Generated/FREERTOS/event_groups.c ****  * in uxCurrentEventBits.
+  85:../Dave/Generated/FREERTOS/event_groups.c ****  */
+  86:../Dave/Generated/FREERTOS/event_groups.c **** static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
+  87:../Dave/Generated/FREERTOS/event_groups.c ****                                         const EventBits_t uxBitsToWaitFor,
+  88:../Dave/Generated/FREERTOS/event_groups.c ****                                         const BaseType_t xWaitForAllBits ) PRIVILEGED_FUNCTION;
+  89:../Dave/Generated/FREERTOS/event_groups.c **** 
+  90:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+  91:../Dave/Generated/FREERTOS/event_groups.c **** 
+  92:../Dave/Generated/FREERTOS/event_groups.c **** #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+  93:../Dave/Generated/FREERTOS/event_groups.c **** 
+  94:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer )
+  95:../Dave/Generated/FREERTOS/event_groups.c ****     {
+  28              	 .loc 1 95 0
+  29              	 .cfi_startproc
+  30              	 
+  31              	 
+  32 0000 80B5     	 push {r7,lr}
+  33              	.LCFI0:
+  34              	 .cfi_def_cfa_offset 8
+  35              	 .cfi_offset 7,-8
+  36              	 .cfi_offset 14,-4
+  37 0002 86B0     	 sub sp,sp,#24
+  38              	.LCFI1:
+  39              	 .cfi_def_cfa_offset 32
+  40 0004 00AF     	 add r7,sp,#0
+  41              	.LCFI2:
+  42              	 .cfi_def_cfa_register 7
+  43 0006 7860     	 str r0,[r7,#4]
+  96:../Dave/Generated/FREERTOS/event_groups.c ****         EventGroup_t * pxEventBits;
+  97:../Dave/Generated/FREERTOS/event_groups.c **** 
+  98:../Dave/Generated/FREERTOS/event_groups.c ****         /* A StaticEventGroup_t object must be provided. */
+  99:../Dave/Generated/FREERTOS/event_groups.c ****         configASSERT( pxEventGroupBuffer );
+  44              	 .loc 1 99 0
+  45 0008 7B68     	 ldr r3,[r7,#4]
+  46 000a 002B     	 cmp r3,#0
+  47 000c 09D1     	 bne .L2
+  48              	.LBB36:
+  49              	.LBB37:
+  50              	 .file 2 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC/portmacro.h"
+   1:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*
+   2:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * FreeRTOS Kernel V10.4.3
+   3:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+   4:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+   5:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * Permission is hereby granted, free of charge, to any person obtaining a copy of
+   6:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * this software and associated documentation files (the "Software"), to deal in
+   7:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * the Software without restriction, including without limitation the rights to
+   8:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+   9:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * the Software, and to permit persons to whom the Software is furnished to do so,
+  10:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * subject to the following conditions:
+  11:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  12:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * The above copyright notice and this permission notice shall be included in all
+  13:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * copies or substantial portions of the Software.
+  14:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  15:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  16:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+  17:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  18:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+  19:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  20:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  21:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  22:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * https://www.FreeRTOS.org
+  23:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * https://github.com/FreeRTOS
+  24:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  25:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * 1 tab == 4 spaces!
+  26:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  */
+  27:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  28:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  29:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** #ifndef PORTMACRO_H
+  30:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define PORTMACRO_H
+  31:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  32:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #ifdef __cplusplus
+  33:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         extern "C" {
+  34:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+  35:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  36:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------
+  37:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * Port specific definitions.
+  38:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  39:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * The settings in this file configure FreeRTOS correctly for the
+  40:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * given hardware and compiler.
+  41:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *
+  42:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * These settings should not be altered.
+  43:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  *-----------------------------------------------------------
+  44:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  */
+  45:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  46:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Type definitions. */
+  47:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portCHAR          char
+  48:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portFLOAT         float
+  49:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portDOUBLE        double
+  50:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portLONG          long
+  51:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portSHORT         short
+  52:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portSTACK_TYPE    uint32_t
+  53:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portBASE_TYPE     long
+  54:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  55:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     typedef portSTACK_TYPE   StackType_t;
+  56:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     typedef long             BaseType_t;
+  57:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     typedef unsigned long    UBaseType_t;
+  58:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  59:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #if ( configUSE_16_BIT_TICKS == 1 )
+  60:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         typedef uint16_t     TickType_t;
+  61:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portMAX_DELAY              ( TickType_t ) 0xffff
+  62:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #else
+  63:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         typedef uint32_t     TickType_t;
+  64:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portMAX_DELAY              ( TickType_t ) 0xffffffffUL
+  65:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  66:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
+  67:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * not need to be guarded with a critical section. */
+  68:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portTICK_TYPE_IS_ATOMIC    1
+  69:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+  70:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+  71:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  72:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Architecture specifics. */
+  73:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portSTACK_GROWTH      ( -1 )
+  74:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portTICK_PERIOD_MS    ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+  75:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portBYTE_ALIGNMENT    8
+  76:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portDONT_DISCARD      __attribute__( ( used ) )
+  77:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+  78:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  79:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Scheduler utilities. */
+  80:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portYIELD()                                 \
+  81:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     {                                                   \
+  82:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         /* Set a PendSV to request a context switch. */ \
+  83:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT; \
+  84:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****                                                         \
+  85:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         /* Barriers are normally not required but do ensure the code is completely \
+  86:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****          * within the specified behaviour for the architecture. */ \
+  87:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile ( "dsb" ::: "memory" );                     \
+  88:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile ( "isb" );                                  \
+  89:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     }
+  90:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  91:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portNVIC_INT_CTRL_REG     ( *( ( volatile uint32_t * ) 0xe000ed04 ) )
+  92:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portNVIC_PENDSVSET_BIT    ( 1UL << 28UL )
+  93:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portEND_SWITCHING_ISR( xSwitchRequired )    if( xSwitchRequired != pdFALSE ) portYIELD(
+  94:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portYIELD_FROM_ISR( x )                     portEND_SWITCHING_ISR( x )
+  95:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+  96:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+  97:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Critical section management. */
+  98:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     extern void vPortEnterCritical( void );
+  99:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     extern void vPortExitCritical( void );
+ 100:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portSET_INTERRUPT_MASK_FROM_ISR()         ulPortRaiseBASEPRI()
+ 101:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portCLEAR_INTERRUPT_MASK_FROM_ISR( x )    vPortSetBASEPRI( x )
+ 102:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portDISABLE_INTERRUPTS()                  vPortRaiseBASEPRI()
+ 103:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portENABLE_INTERRUPTS()                   vPortSetBASEPRI( 0 )
+ 104:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portENTER_CRITICAL()                      vPortEnterCritical()
+ 105:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portEXIT_CRITICAL()                       vPortExitCritical()
+ 106:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 107:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 108:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 109:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Task function macros as described on the FreeRTOS.org WEB site.  These are
+ 110:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * not necessary for to use this port.  They are defined so the common demo files
+ 111:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****  * (which build with all the ports) will build. */
+ 112:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portTASK_FUNCTION_PROTO( vFunction, pvParameters )    void vFunction( void * pvParamete
+ 113:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portTASK_FUNCTION( vFunction, pvParameters )          void vFunction( void * pvParamete
+ 114:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 115:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 116:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Tickless idle/low power functionality. */
+ 117:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #ifndef portSUPPRESS_TICKS_AND_SLEEP
+ 118:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         extern void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime );
+ 119:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )    vPortSuppressTicksAndSleep( xE
+ 120:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+ 121:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 122:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 123:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Architecture specific optimisations. */
+ 124:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
+ 125:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
+ 126:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+ 127:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 128:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #if configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
+ 129:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 130:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Generic helper function. */
+ 131:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __attribute__( ( always_inline ) ) static inline uint8_t ucPortCountLeadingZeros( uint32_t 
+ 132:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         {
+ 133:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             uint8_t ucReturn;
+ 134:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 135:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             __asm volatile ( "clz %0, %1" : "=r" ( ucReturn ) : "r" ( ulBitmap ) : "memory" );
+ 136:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 137:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             return ucReturn;
+ 138:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         }
+ 139:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 140:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Check the configuration. */
+ 141:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #if ( configMAX_PRIORITIES > 32 )
+ 142:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             #error configUSE_PORT_OPTIMISED_TASK_SELECTION can only be set to 1 when configMAX_PRIO
+ 143:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #endif
+ 144:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 145:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* Store/clear the ready priorities in a bit map. */
+ 146:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portRECORD_READY_PRIORITY( uxPriority, uxReadyPriorities )    ( uxReadyPriorities )
+ 147:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portRESET_READY_PRIORITY( uxPriority, uxReadyPriorities )     ( uxReadyPriorities )
+ 148:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 149:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 150:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 151:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities )    uxTopPriority = ( 3
+ 152:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 153:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
+ 154:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 155:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 156:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 157:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #ifdef configASSERT
+ 158:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         void vPortValidateInterruptPriority( void );
+ 159:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()    vPortValidateInterruptPriority()
+ 160:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+ 161:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 162:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /* portNOP() is not required by this port. */
+ 163:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portNOP()
+ 164:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 165:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #define portINLINE              __inline
+ 166:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 167:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #ifndef portFORCE_INLINE
+ 168:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         #define portFORCE_INLINE    inline __attribute__( ( always_inline ) )
+ 169:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     #endif
+ 170:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 171:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     portFORCE_INLINE static BaseType_t xPortIsInsideInterrupt( void )
+ 172:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     {
+ 173:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         uint32_t ulCurrentInterrupt;
+ 174:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         BaseType_t xReturn;
+ 175:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 176:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         /* Obtain the number of the currently executing interrupt. */
+ 177:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile ( "mrs %0, ipsr" : "=r" ( ulCurrentInterrupt )::"memory" );
+ 178:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 179:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         if( ulCurrentInterrupt == 0 )
+ 180:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         {
+ 181:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             xReturn = pdFALSE;
+ 182:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         }
+ 183:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         else
+ 184:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         {
+ 185:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             xReturn = pdTRUE;
+ 186:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         }
+ 187:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 188:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         return xReturn;
+ 189:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     }
+ 190:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 191:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 192:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 193:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     portFORCE_INLINE static void vPortRaiseBASEPRI( void )
+ 194:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     {
+ 195:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         uint32_t ulNewBASEPRI;
+ 196:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 197:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile
+  51              	 .loc 2 197 0 discriminator 1
+  52              	
+  53 000e 4FF0FC03 	 mov r3,#252
+  54 0012 83F31188 	 msr basepri,r3
+  55 0016 BFF36F8F 	 isb 
+  56 001a BFF34F8F 	 dsb 
+  57              	
+  58              	
+  59              	 .thumb
+  60 001e 3B61     	 str r3,[r7,#16]
+  61              	.L3:
+  62              	.LBE37:
+  63              	.LBE36:
+  64              	 .loc 1 99 0 discriminator 1
+  65 0020 FEE7     	 b .L3
+  66              	.L2:
+  67              	.LBB38:
+ 100:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 101:../Dave/Generated/FREERTOS/event_groups.c ****         #if ( configASSERT_DEFINED == 1 )
+ 102:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 103:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Sanity check that the size of the structure used to declare a
+ 104:../Dave/Generated/FREERTOS/event_groups.c ****                  * variable of type StaticEventGroup_t equals the size of the real
+ 105:../Dave/Generated/FREERTOS/event_groups.c ****                  * event group structure. */
+ 106:../Dave/Generated/FREERTOS/event_groups.c ****                 volatile size_t xSize = sizeof( StaticEventGroup_t );
+  68              	 .loc 1 106 0
+  69 0022 2023     	 movs r3,#32
+  70 0024 BB60     	 str r3,[r7,#8]
+ 107:../Dave/Generated/FREERTOS/event_groups.c ****                 configASSERT( xSize == sizeof( EventGroup_t ) );
+  71              	 .loc 1 107 0
+  72 0026 BB68     	 ldr r3,[r7,#8]
+  73 0028 202B     	 cmp r3,#32
+  74 002a 09D0     	 beq .L4
+  75              	.LBB39:
+  76              	.LBB40:
+  77              	 .loc 2 197 0 discriminator 1
+  78              	
+  79 002c 4FF0FC03 	 mov r3,#252
+  80 0030 83F31188 	 msr basepri,r3
+  81 0034 BFF36F8F 	 isb 
+  82 0038 BFF34F8F 	 dsb 
+  83              	
+  84              	
+  85              	 .thumb
+  86 003c FB60     	 str r3,[r7,#12]
+  87              	.L5:
+  88              	.LBE40:
+  89              	.LBE39:
+  90              	 .loc 1 107 0 discriminator 2
+  91 003e FEE7     	 b .L5
+  92              	.L4:
+  93              	.LBE38:
+ 108:../Dave/Generated/FREERTOS/event_groups.c ****             } /*lint !e529 xSize is referenced if configASSERT() is defined. */
+ 109:../Dave/Generated/FREERTOS/event_groups.c ****         #endif /* configASSERT_DEFINED */
+ 110:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 111:../Dave/Generated/FREERTOS/event_groups.c ****         /* The user has provided a statically allocated event group - use it. */
+ 112:../Dave/Generated/FREERTOS/event_groups.c ****         pxEventBits = ( EventGroup_t * ) pxEventGroupBuffer; /*lint !e740 !e9087 EventGroup_t and S
+  94              	 .loc 1 112 0
+  95 0040 7B68     	 ldr r3,[r7,#4]
+  96 0042 7B61     	 str r3,[r7,#20]
+ 113:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 114:../Dave/Generated/FREERTOS/event_groups.c ****         if( pxEventBits != NULL )
+  97              	 .loc 1 114 0
+  98 0044 7B69     	 ldr r3,[r7,#20]
+  99 0046 002B     	 cmp r3,#0
+ 100 0048 0AD0     	 beq .L6
+ 115:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 116:../Dave/Generated/FREERTOS/event_groups.c ****             pxEventBits->uxEventBits = 0;
+ 101              	 .loc 1 116 0
+ 102 004a 7B69     	 ldr r3,[r7,#20]
+ 103 004c 0022     	 movs r2,#0
+ 104 004e 1A60     	 str r2,[r3]
+ 117:../Dave/Generated/FREERTOS/event_groups.c ****             vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+ 105              	 .loc 1 117 0
+ 106 0050 7B69     	 ldr r3,[r7,#20]
+ 107 0052 0433     	 adds r3,r3,#4
+ 108 0054 1846     	 mov r0,r3
+ 109 0056 FFF7FEFF 	 bl vListInitialise
+ 118:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 119:../Dave/Generated/FREERTOS/event_groups.c ****             #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+ 120:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 121:../Dave/Generated/FREERTOS/event_groups.c ****                     /* Both static and dynamic allocation can be used, so note that
+ 122:../Dave/Generated/FREERTOS/event_groups.c ****                      * this event group was created statically in case the event group
+ 123:../Dave/Generated/FREERTOS/event_groups.c ****                      * is later deleted. */
+ 124:../Dave/Generated/FREERTOS/event_groups.c ****                     pxEventBits->ucStaticallyAllocated = pdTRUE;
+ 110              	 .loc 1 124 0
+ 111 005a 7B69     	 ldr r3,[r7,#20]
+ 112 005c 0122     	 movs r2,#1
+ 113 005e 1A77     	 strb r2,[r3,#28]
+ 114              	.L6:
+ 125:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 126:../Dave/Generated/FREERTOS/event_groups.c ****             #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+ 127:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 128:../Dave/Generated/FREERTOS/event_groups.c ****             traceEVENT_GROUP_CREATE( pxEventBits );
+ 129:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 130:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 131:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 132:../Dave/Generated/FREERTOS/event_groups.c ****             /* xEventGroupCreateStatic should only ever be called with
+ 133:../Dave/Generated/FREERTOS/event_groups.c ****              * pxEventGroupBuffer pointing to a pre-allocated (compile time
+ 134:../Dave/Generated/FREERTOS/event_groups.c ****              * allocated) StaticEventGroup_t variable. */
+ 135:../Dave/Generated/FREERTOS/event_groups.c ****             traceEVENT_GROUP_CREATE_FAILED();
+ 136:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 137:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 138:../Dave/Generated/FREERTOS/event_groups.c ****         return pxEventBits;
+ 115              	 .loc 1 138 0
+ 116 0060 7B69     	 ldr r3,[r7,#20]
+ 139:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 117              	 .loc 1 139 0
+ 118 0062 1846     	 mov r0,r3
+ 119 0064 1837     	 adds r7,r7,#24
+ 120              	.LCFI3:
+ 121              	 .cfi_def_cfa_offset 8
+ 122 0066 BD46     	 mov sp,r7
+ 123              	.LCFI4:
+ 124              	 .cfi_def_cfa_register 13
+ 125              	 
+ 126 0068 80BD     	 pop {r7,pc}
+ 127              	 .cfi_endproc
+ 128              	.LFE137:
+ 130 006a 00BF     	 .section .text.xEventGroupCreate,"ax",%progbits
+ 131              	 .align 2
+ 132              	 .global xEventGroupCreate
+ 133              	 .thumb
+ 134              	 .thumb_func
+ 136              	xEventGroupCreate:
+ 137              	.LFB138:
+ 140:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 141:../Dave/Generated/FREERTOS/event_groups.c **** #endif /* configSUPPORT_STATIC_ALLOCATION */
+ 142:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 143:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 144:../Dave/Generated/FREERTOS/event_groups.c **** #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+ 145:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 146:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroupHandle_t xEventGroupCreate( void )
+ 147:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 138              	 .loc 1 147 0
+ 139              	 .cfi_startproc
+ 140              	 
+ 141              	 
+ 142 0000 80B5     	 push {r7,lr}
+ 143              	.LCFI5:
+ 144              	 .cfi_def_cfa_offset 8
+ 145              	 .cfi_offset 7,-8
+ 146              	 .cfi_offset 14,-4
+ 147 0002 82B0     	 sub sp,sp,#8
+ 148              	.LCFI6:
+ 149              	 .cfi_def_cfa_offset 16
+ 150 0004 00AF     	 add r7,sp,#0
+ 151              	.LCFI7:
+ 152              	 .cfi_def_cfa_register 7
+ 148:../Dave/Generated/FREERTOS/event_groups.c ****         EventGroup_t * pxEventBits;
+ 149:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 150:../Dave/Generated/FREERTOS/event_groups.c ****         /* Allocate the event group.  Justification for MISRA deviation as
+ 151:../Dave/Generated/FREERTOS/event_groups.c ****          * follows:  pvPortMalloc() always ensures returned memory blocks are
+ 152:../Dave/Generated/FREERTOS/event_groups.c ****          * aligned per the requirements of the MCU stack.  In this case
+ 153:../Dave/Generated/FREERTOS/event_groups.c ****          * pvPortMalloc() must return a pointer that is guaranteed to meet the
+ 154:../Dave/Generated/FREERTOS/event_groups.c ****          * alignment requirements of the EventGroup_t structure - which (if you
+ 155:../Dave/Generated/FREERTOS/event_groups.c ****          * follow it through) is the alignment requirements of the TickType_t type
+ 156:../Dave/Generated/FREERTOS/event_groups.c ****          * (EventBits_t being of TickType_t itself).  Therefore, whenever the
+ 157:../Dave/Generated/FREERTOS/event_groups.c ****          * stack alignment requirements are greater than or equal to the
+ 158:../Dave/Generated/FREERTOS/event_groups.c ****          * TickType_t alignment requirements the cast is safe.  In other cases,
+ 159:../Dave/Generated/FREERTOS/event_groups.c ****          * where the natural word size of the architecture is less than
+ 160:../Dave/Generated/FREERTOS/event_groups.c ****          * sizeof( TickType_t ), the TickType_t variables will be accessed in two
+ 161:../Dave/Generated/FREERTOS/event_groups.c ****          * or more reads operations, and the alignment requirements is only that
+ 162:../Dave/Generated/FREERTOS/event_groups.c ****          * of each individual read. */
+ 163:../Dave/Generated/FREERTOS/event_groups.c ****         pxEventBits = ( EventGroup_t * ) pvPortMalloc( sizeof( EventGroup_t ) ); /*lint !e9087 !e90
+ 153              	 .loc 1 163 0
+ 154 0006 2020     	 movs r0,#32
+ 155 0008 FFF7FEFF 	 bl pvPortMalloc
+ 156 000c 7860     	 str r0,[r7,#4]
+ 164:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 165:../Dave/Generated/FREERTOS/event_groups.c ****         if( pxEventBits != NULL )
+ 157              	 .loc 1 165 0
+ 158 000e 7B68     	 ldr r3,[r7,#4]
+ 159 0010 002B     	 cmp r3,#0
+ 160 0012 0AD0     	 beq .L9
+ 166:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 167:../Dave/Generated/FREERTOS/event_groups.c ****             pxEventBits->uxEventBits = 0;
+ 161              	 .loc 1 167 0
+ 162 0014 7B68     	 ldr r3,[r7,#4]
+ 163 0016 0022     	 movs r2,#0
+ 164 0018 1A60     	 str r2,[r3]
+ 168:../Dave/Generated/FREERTOS/event_groups.c ****             vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+ 165              	 .loc 1 168 0
+ 166 001a 7B68     	 ldr r3,[r7,#4]
+ 167 001c 0433     	 adds r3,r3,#4
+ 168 001e 1846     	 mov r0,r3
+ 169 0020 FFF7FEFF 	 bl vListInitialise
+ 169:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 170:../Dave/Generated/FREERTOS/event_groups.c ****             #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+ 171:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 172:../Dave/Generated/FREERTOS/event_groups.c ****                     /* Both static and dynamic allocation can be used, so note this
+ 173:../Dave/Generated/FREERTOS/event_groups.c ****                      * event group was allocated statically in case the event group is
+ 174:../Dave/Generated/FREERTOS/event_groups.c ****                      * later deleted. */
+ 175:../Dave/Generated/FREERTOS/event_groups.c ****                     pxEventBits->ucStaticallyAllocated = pdFALSE;
+ 170              	 .loc 1 175 0
+ 171 0024 7B68     	 ldr r3,[r7,#4]
+ 172 0026 0022     	 movs r2,#0
+ 173 0028 1A77     	 strb r2,[r3,#28]
+ 174              	.L9:
+ 176:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 177:../Dave/Generated/FREERTOS/event_groups.c ****             #endif /* configSUPPORT_STATIC_ALLOCATION */
+ 178:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 179:../Dave/Generated/FREERTOS/event_groups.c ****             traceEVENT_GROUP_CREATE( pxEventBits );
+ 180:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 181:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 182:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 183:../Dave/Generated/FREERTOS/event_groups.c ****             traceEVENT_GROUP_CREATE_FAILED(); /*lint !e9063 Else branch only exists to allow tracin
+ 184:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 185:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 186:../Dave/Generated/FREERTOS/event_groups.c ****         return pxEventBits;
+ 175              	 .loc 1 186 0
+ 176 002a 7B68     	 ldr r3,[r7,#4]
+ 187:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 177              	 .loc 1 187 0
+ 178 002c 1846     	 mov r0,r3
+ 179 002e 0837     	 adds r7,r7,#8
+ 180              	.LCFI8:
+ 181              	 .cfi_def_cfa_offset 8
+ 182 0030 BD46     	 mov sp,r7
+ 183              	.LCFI9:
+ 184              	 .cfi_def_cfa_register 13
+ 185              	 
+ 186 0032 80BD     	 pop {r7,pc}
+ 187              	 .cfi_endproc
+ 188              	.LFE138:
+ 190              	 .section .text.xEventGroupSync,"ax",%progbits
+ 191              	 .align 2
+ 192              	 .global xEventGroupSync
+ 193              	 .thumb
+ 194              	 .thumb_func
+ 196              	xEventGroupSync:
+ 197              	.LFB139:
+ 188:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 189:../Dave/Generated/FREERTOS/event_groups.c **** #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+ 190:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 191:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 192:../Dave/Generated/FREERTOS/event_groups.c **** EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
+ 193:../Dave/Generated/FREERTOS/event_groups.c ****                              const EventBits_t uxBitsToSet,
+ 194:../Dave/Generated/FREERTOS/event_groups.c ****                              const EventBits_t uxBitsToWaitFor,
+ 195:../Dave/Generated/FREERTOS/event_groups.c ****                              TickType_t xTicksToWait )
+ 196:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 198              	 .loc 1 196 0
+ 199              	 .cfi_startproc
+ 200              	 
+ 201              	 
+ 202 0000 80B5     	 push {r7,lr}
+ 203              	.LCFI10:
+ 204              	 .cfi_def_cfa_offset 8
+ 205              	 .cfi_offset 7,-8
+ 206              	 .cfi_offset 14,-4
+ 207 0002 8CB0     	 sub sp,sp,#48
+ 208              	.LCFI11:
+ 209              	 .cfi_def_cfa_offset 56
+ 210 0004 00AF     	 add r7,sp,#0
+ 211              	.LCFI12:
+ 212              	 .cfi_def_cfa_register 7
+ 213 0006 F860     	 str r0,[r7,#12]
+ 214 0008 B960     	 str r1,[r7,#8]
+ 215 000a 7A60     	 str r2,[r7,#4]
+ 216 000c 3B60     	 str r3,[r7]
+ 197:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxOriginalBitValue, uxReturn;
+ 198:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t * pxEventBits = xEventGroup;
+ 217              	 .loc 1 198 0
+ 218 000e FB68     	 ldr r3,[r7,#12]
+ 219 0010 BB62     	 str r3,[r7,#40]
+ 199:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xAlreadyYielded;
+ 200:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xTimeoutOccurred = pdFALSE;
+ 220              	 .loc 1 200 0
+ 221 0012 0023     	 movs r3,#0
+ 222 0014 7B62     	 str r3,[r7,#36]
+ 201:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 202:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+ 223              	 .loc 1 202 0
+ 224 0016 7B68     	 ldr r3,[r7,#4]
+ 225 0018 03F07F43 	 and r3,r3,#-16777216
+ 226 001c 002B     	 cmp r3,#0
+ 227 001e 09D0     	 beq .L12
+ 228              	.LBB41:
+ 229              	.LBB42:
+ 230              	 .loc 2 197 0 discriminator 1
+ 231              	
+ 232 0020 4FF0FC03 	 mov r3,#252
+ 233 0024 83F31188 	 msr basepri,r3
+ 234 0028 BFF36F8F 	 isb 
+ 235 002c BFF34F8F 	 dsb 
+ 236              	
+ 237              	
+ 238              	 .thumb
+ 239 0030 BB61     	 str r3,[r7,#24]
+ 240              	.L13:
+ 241              	.LBE42:
+ 242              	.LBE41:
+ 243              	 .loc 1 202 0 discriminator 1
+ 244 0032 FEE7     	 b .L13
+ 245              	.L12:
+ 203:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( uxBitsToWaitFor != 0 );
+ 246              	 .loc 1 203 0
+ 247 0034 7B68     	 ldr r3,[r7,#4]
+ 248 0036 002B     	 cmp r3,#0
+ 249 0038 09D1     	 bne .L14
+ 250              	.LBB43:
+ 251              	.LBB44:
+ 252              	 .loc 2 197 0 discriminator 1
+ 253              	
+ 254 003a 4FF0FC03 	 mov r3,#252
+ 255 003e 83F31188 	 msr basepri,r3
+ 256 0042 BFF36F8F 	 isb 
+ 257 0046 BFF34F8F 	 dsb 
+ 258              	
+ 259              	
+ 260              	 .thumb
+ 261 004a 7B61     	 str r3,[r7,#20]
+ 262              	.L15:
+ 263              	.LBE44:
+ 264              	.LBE43:
+ 265              	 .loc 1 203 0 discriminator 2
+ 266 004c FEE7     	 b .L15
+ 267              	.L14:
+ 204:../Dave/Generated/FREERTOS/event_groups.c ****     #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+ 205:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 206:../Dave/Generated/FREERTOS/event_groups.c ****             configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToW
+ 268              	 .loc 1 206 0
+ 269 004e FFF7FEFF 	 bl xTaskGetSchedulerState
+ 270 0052 0346     	 mov r3,r0
+ 271 0054 002B     	 cmp r3,#0
+ 272 0056 02D1     	 bne .L16
+ 273              	 .loc 1 206 0 is_stmt 0 discriminator 2
+ 274 0058 3B68     	 ldr r3,[r7]
+ 275 005a 002B     	 cmp r3,#0
+ 276 005c 01D1     	 bne .L17
+ 277              	.L16:
+ 278              	 .loc 1 206 0 discriminator 3
+ 279 005e 0123     	 movs r3,#1
+ 280 0060 00E0     	 b .L18
+ 281              	.L17:
+ 282              	 .loc 1 206 0 discriminator 4
+ 283 0062 0023     	 movs r3,#0
+ 284              	.L18:
+ 285              	 .loc 1 206 0 discriminator 6
+ 286 0064 002B     	 cmp r3,#0
+ 287 0066 09D1     	 bne .L19
+ 288              	.LBB45:
+ 289              	.LBB46:
+ 290              	 .loc 2 197 0 is_stmt 1 discriminator 7
+ 291              	
+ 292 0068 4FF0FC03 	 mov r3,#252
+ 293 006c 83F31188 	 msr basepri,r3
+ 294 0070 BFF36F8F 	 isb 
+ 295 0074 BFF34F8F 	 dsb 
+ 296              	
+ 297              	
+ 298              	 .thumb
+ 299 0078 3B61     	 str r3,[r7,#16]
+ 300              	.L20:
+ 301              	.LBE46:
+ 302              	.LBE45:
+ 303              	 .loc 1 206 0 discriminator 3
+ 304 007a FEE7     	 b .L20
+ 305              	.L19:
+ 207:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 208:../Dave/Generated/FREERTOS/event_groups.c ****     #endif
+ 209:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 210:../Dave/Generated/FREERTOS/event_groups.c ****     vTaskSuspendAll();
+ 306              	 .loc 1 210 0
+ 307 007c FFF7FEFF 	 bl vTaskSuspendAll
+ 211:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 212:../Dave/Generated/FREERTOS/event_groups.c ****         uxOriginalBitValue = pxEventBits->uxEventBits;
+ 308              	 .loc 1 212 0
+ 309 0080 BB6A     	 ldr r3,[r7,#40]
+ 310 0082 1B68     	 ldr r3,[r3]
+ 311 0084 3B62     	 str r3,[r7,#32]
+ 213:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 214:../Dave/Generated/FREERTOS/event_groups.c ****         ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
+ 312              	 .loc 1 214 0
+ 313 0086 F868     	 ldr r0,[r7,#12]
+ 314 0088 B968     	 ldr r1,[r7,#8]
+ 315 008a FFF7FEFF 	 bl xEventGroupSetBits
+ 215:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 216:../Dave/Generated/FREERTOS/event_groups.c ****         if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+ 316              	 .loc 1 216 0
+ 317 008e 3A6A     	 ldr r2,[r7,#32]
+ 318 0090 BB68     	 ldr r3,[r7,#8]
+ 319 0092 1A43     	 orrs r2,r2,r3
+ 320 0094 7B68     	 ldr r3,[r7,#4]
+ 321 0096 1A40     	 ands r2,r2,r3
+ 322 0098 7B68     	 ldr r3,[r7,#4]
+ 323 009a 9A42     	 cmp r2,r3
+ 324 009c 0DD1     	 bne .L21
+ 217:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 218:../Dave/Generated/FREERTOS/event_groups.c ****             /* All the rendezvous bits are now set - no need to block. */
+ 219:../Dave/Generated/FREERTOS/event_groups.c ****             uxReturn = ( uxOriginalBitValue | uxBitsToSet );
+ 325              	 .loc 1 219 0
+ 326 009e 3A6A     	 ldr r2,[r7,#32]
+ 327 00a0 BB68     	 ldr r3,[r7,#8]
+ 328 00a2 1343     	 orrs r3,r3,r2
+ 329 00a4 FB62     	 str r3,[r7,#44]
+ 220:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 221:../Dave/Generated/FREERTOS/event_groups.c ****             /* Rendezvous always clear the bits.  They will have been cleared
+ 222:../Dave/Generated/FREERTOS/event_groups.c ****              * already unless this is the only task in the rendezvous. */
+ 223:../Dave/Generated/FREERTOS/event_groups.c ****             pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+ 330              	 .loc 1 223 0
+ 331 00a6 BB6A     	 ldr r3,[r7,#40]
+ 332 00a8 1A68     	 ldr r2,[r3]
+ 333 00aa 7B68     	 ldr r3,[r7,#4]
+ 334 00ac DB43     	 mvns r3,r3
+ 335 00ae 1A40     	 ands r2,r2,r3
+ 336 00b0 BB6A     	 ldr r3,[r7,#40]
+ 337 00b2 1A60     	 str r2,[r3]
+ 224:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 225:../Dave/Generated/FREERTOS/event_groups.c ****             xTicksToWait = 0;
+ 338              	 .loc 1 225 0
+ 339 00b4 0023     	 movs r3,#0
+ 340 00b6 3B60     	 str r3,[r7]
+ 341 00b8 14E0     	 b .L22
+ 342              	.L21:
+ 226:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 227:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 228:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 229:../Dave/Generated/FREERTOS/event_groups.c ****             if( xTicksToWait != ( TickType_t ) 0 )
+ 343              	 .loc 1 229 0
+ 344 00ba 3B68     	 ldr r3,[r7]
+ 345 00bc 002B     	 cmp r3,#0
+ 346 00be 0CD0     	 beq .L23
+ 230:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 231:../Dave/Generated/FREERTOS/event_groups.c ****                 traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor );
+ 232:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 233:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Store the bits that the calling task is waiting for in the
+ 234:../Dave/Generated/FREERTOS/event_groups.c ****                  * task's event list item so the kernel knows when a match is
+ 235:../Dave/Generated/FREERTOS/event_groups.c ****                  * found.  Then enter the blocked state. */
+ 236:../Dave/Generated/FREERTOS/event_groups.c ****                 vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToW
+ 347              	 .loc 1 236 0
+ 348 00c0 BB6A     	 ldr r3,[r7,#40]
+ 349 00c2 1A1D     	 adds r2,r3,#4
+ 350 00c4 7B68     	 ldr r3,[r7,#4]
+ 351 00c6 43F0A063 	 orr r3,r3,#83886080
+ 352 00ca 1046     	 mov r0,r2
+ 353 00cc 1946     	 mov r1,r3
+ 354 00ce 3A68     	 ldr r2,[r7]
+ 355 00d0 FFF7FEFF 	 bl vTaskPlaceOnUnorderedEventList
+ 237:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 238:../Dave/Generated/FREERTOS/event_groups.c ****                 /* This assignment is obsolete as uxReturn will get set after
+ 239:../Dave/Generated/FREERTOS/event_groups.c ****                  * the task unblocks, but some compilers mistakenly generate a
+ 240:../Dave/Generated/FREERTOS/event_groups.c ****                  * warning about uxReturn being returned without being set if the
+ 241:../Dave/Generated/FREERTOS/event_groups.c ****                  * assignment is omitted. */
+ 242:../Dave/Generated/FREERTOS/event_groups.c ****                 uxReturn = 0;
+ 356              	 .loc 1 242 0
+ 357 00d4 0023     	 movs r3,#0
+ 358 00d6 FB62     	 str r3,[r7,#44]
+ 359 00d8 04E0     	 b .L22
+ 360              	.L23:
+ 243:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 244:../Dave/Generated/FREERTOS/event_groups.c ****             else
+ 245:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 246:../Dave/Generated/FREERTOS/event_groups.c ****                 /* The rendezvous bits were not set, but no block time was
+ 247:../Dave/Generated/FREERTOS/event_groups.c ****                  * specified - just return the current event bit value. */
+ 248:../Dave/Generated/FREERTOS/event_groups.c ****                 uxReturn = pxEventBits->uxEventBits;
+ 361              	 .loc 1 248 0
+ 362 00da BB6A     	 ldr r3,[r7,#40]
+ 363 00dc 1B68     	 ldr r3,[r3]
+ 364 00de FB62     	 str r3,[r7,#44]
+ 249:../Dave/Generated/FREERTOS/event_groups.c ****                 xTimeoutOccurred = pdTRUE;
+ 365              	 .loc 1 249 0
+ 366 00e0 0123     	 movs r3,#1
+ 367 00e2 7B62     	 str r3,[r7,#36]
+ 368              	.L22:
+ 250:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 251:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 252:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 253:../Dave/Generated/FREERTOS/event_groups.c ****     xAlreadyYielded = xTaskResumeAll();
+ 369              	 .loc 1 253 0
+ 370 00e4 FFF7FEFF 	 bl xTaskResumeAll
+ 371 00e8 F861     	 str r0,[r7,#28]
+ 254:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 255:../Dave/Generated/FREERTOS/event_groups.c ****     if( xTicksToWait != ( TickType_t ) 0 )
+ 372              	 .loc 1 255 0
+ 373 00ea 3B68     	 ldr r3,[r7]
+ 374 00ec 002B     	 cmp r3,#0
+ 375 00ee 2CD0     	 beq .L24
+ 256:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 257:../Dave/Generated/FREERTOS/event_groups.c ****         if( xAlreadyYielded == pdFALSE )
+ 376              	 .loc 1 257 0
+ 377 00f0 FB69     	 ldr r3,[r7,#28]
+ 378 00f2 002B     	 cmp r3,#0
+ 379 00f4 07D1     	 bne .L25
+ 258:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 259:../Dave/Generated/FREERTOS/event_groups.c ****             portYIELD_WITHIN_API();
+ 380              	 .loc 1 259 0
+ 381 00f6 174B     	 ldr r3,.L29
+ 382 00f8 4FF08052 	 mov r2,#268435456
+ 383 00fc 1A60     	 str r2,[r3]
+ 384              	
+ 385 00fe BFF34F8F 	 dsb
+ 386              	
+ 387              	
+ 388 0102 BFF36F8F 	 isb
+ 389              	
+ 390              	 .thumb
+ 391              	.L25:
+ 260:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 261:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 262:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 263:../Dave/Generated/FREERTOS/event_groups.c ****             mtCOVERAGE_TEST_MARKER();
+ 264:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 265:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 266:../Dave/Generated/FREERTOS/event_groups.c ****         /* The task blocked to wait for its required bits to be set - at this
+ 267:../Dave/Generated/FREERTOS/event_groups.c ****          * point either the required bits were set or the block time expired.  If
+ 268:../Dave/Generated/FREERTOS/event_groups.c ****          * the required bits were set they will have been stored in the task's
+ 269:../Dave/Generated/FREERTOS/event_groups.c ****          * event list item, and they should now be retrieved then cleared. */
+ 270:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn = uxTaskResetEventItemValue();
+ 392              	 .loc 1 270 0
+ 393 0106 FFF7FEFF 	 bl uxTaskResetEventItemValue
+ 394 010a F862     	 str r0,[r7,#44]
+ 271:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 272:../Dave/Generated/FREERTOS/event_groups.c ****         if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+ 395              	 .loc 1 272 0
+ 396 010c FB6A     	 ldr r3,[r7,#44]
+ 397 010e 03F00073 	 and r3,r3,#33554432
+ 398 0112 002B     	 cmp r3,#0
+ 399 0114 15D1     	 bne .L26
+ 273:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 274:../Dave/Generated/FREERTOS/event_groups.c ****             /* The task timed out, just return the current event bit value. */
+ 275:../Dave/Generated/FREERTOS/event_groups.c ****             taskENTER_CRITICAL();
+ 400              	 .loc 1 275 0
+ 401 0116 FFF7FEFF 	 bl vPortEnterCritical
+ 276:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 277:../Dave/Generated/FREERTOS/event_groups.c ****                 uxReturn = pxEventBits->uxEventBits;
+ 402              	 .loc 1 277 0
+ 403 011a BB6A     	 ldr r3,[r7,#40]
+ 404 011c 1B68     	 ldr r3,[r3]
+ 405 011e FB62     	 str r3,[r7,#44]
+ 278:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 279:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Although the task got here because it timed out before the
+ 280:../Dave/Generated/FREERTOS/event_groups.c ****                  * bits it was waiting for were set, it is possible that since it
+ 281:../Dave/Generated/FREERTOS/event_groups.c ****                  * unblocked another task has set the bits.  If this is the case
+ 282:../Dave/Generated/FREERTOS/event_groups.c ****                  * then it needs to clear the bits before exiting. */
+ 283:../Dave/Generated/FREERTOS/event_groups.c ****                 if( ( uxReturn & uxBitsToWaitFor ) == uxBitsToWaitFor )
+ 406              	 .loc 1 283 0
+ 407 0120 FA6A     	 ldr r2,[r7,#44]
+ 408 0122 7B68     	 ldr r3,[r7,#4]
+ 409 0124 1A40     	 ands r2,r2,r3
+ 410 0126 7B68     	 ldr r3,[r7,#4]
+ 411 0128 9A42     	 cmp r2,r3
+ 412 012a 06D1     	 bne .L27
+ 284:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 285:../Dave/Generated/FREERTOS/event_groups.c ****                     pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+ 413              	 .loc 1 285 0
+ 414 012c BB6A     	 ldr r3,[r7,#40]
+ 415 012e 1A68     	 ldr r2,[r3]
+ 416 0130 7B68     	 ldr r3,[r7,#4]
+ 417 0132 DB43     	 mvns r3,r3
+ 418 0134 1A40     	 ands r2,r2,r3
+ 419 0136 BB6A     	 ldr r3,[r7,#40]
+ 420 0138 1A60     	 str r2,[r3]
+ 421              	.L27:
+ 286:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 287:../Dave/Generated/FREERTOS/event_groups.c ****                 else
+ 288:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 289:../Dave/Generated/FREERTOS/event_groups.c ****                     mtCOVERAGE_TEST_MARKER();
+ 290:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 291:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 292:../Dave/Generated/FREERTOS/event_groups.c ****             taskEXIT_CRITICAL();
+ 422              	 .loc 1 292 0
+ 423 013a FFF7FEFF 	 bl vPortExitCritical
+ 293:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 294:../Dave/Generated/FREERTOS/event_groups.c ****             xTimeoutOccurred = pdTRUE;
+ 424              	 .loc 1 294 0
+ 425 013e 0123     	 movs r3,#1
+ 426 0140 7B62     	 str r3,[r7,#36]
+ 427              	.L26:
+ 295:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 296:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 297:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 298:../Dave/Generated/FREERTOS/event_groups.c ****             /* The task unblocked because the bits were set. */
+ 299:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 300:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 301:../Dave/Generated/FREERTOS/event_groups.c ****         /* Control bits might be set as the task had blocked should not be
+ 302:../Dave/Generated/FREERTOS/event_groups.c ****          * returned. */
+ 303:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+ 428              	 .loc 1 303 0
+ 429 0142 FB6A     	 ldr r3,[r7,#44]
+ 430 0144 23F07F43 	 bic r3,r3,#-16777216
+ 431 0148 FB62     	 str r3,[r7,#44]
+ 432              	.L24:
+ 304:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 305:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 306:../Dave/Generated/FREERTOS/event_groups.c ****     traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred );
+ 307:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 308:../Dave/Generated/FREERTOS/event_groups.c ****     /* Prevent compiler warnings when trace macros are not used. */
+ 309:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xTimeoutOccurred;
+ 310:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 311:../Dave/Generated/FREERTOS/event_groups.c ****     return uxReturn;
+ 433              	 .loc 1 311 0
+ 434 014a FB6A     	 ldr r3,[r7,#44]
+ 312:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 435              	 .loc 1 312 0
+ 436 014c 1846     	 mov r0,r3
+ 437 014e 3037     	 adds r7,r7,#48
+ 438              	.LCFI13:
+ 439              	 .cfi_def_cfa_offset 8
+ 440 0150 BD46     	 mov sp,r7
+ 441              	.LCFI14:
+ 442              	 .cfi_def_cfa_register 13
+ 443              	 
+ 444 0152 80BD     	 pop {r7,pc}
+ 445              	.L30:
+ 446              	 .align 2
+ 447              	.L29:
+ 448 0154 04ED00E0 	 .word -536810236
+ 449              	 .cfi_endproc
+ 450              	.LFE139:
+ 452              	 .section .text.xEventGroupWaitBits,"ax",%progbits
+ 453              	 .align 2
+ 454              	 .global xEventGroupWaitBits
+ 455              	 .thumb
+ 456              	 .thumb_func
+ 458              	xEventGroupWaitBits:
+ 459              	.LFB140:
+ 313:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 314:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 315:../Dave/Generated/FREERTOS/event_groups.c **** EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
+ 316:../Dave/Generated/FREERTOS/event_groups.c ****                                  const EventBits_t uxBitsToWaitFor,
+ 317:../Dave/Generated/FREERTOS/event_groups.c ****                                  const BaseType_t xClearOnExit,
+ 318:../Dave/Generated/FREERTOS/event_groups.c ****                                  const BaseType_t xWaitForAllBits,
+ 319:../Dave/Generated/FREERTOS/event_groups.c ****                                  TickType_t xTicksToWait )
+ 320:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 460              	 .loc 1 320 0
+ 461              	 .cfi_startproc
+ 462              	 
+ 463              	 
+ 464 0000 80B5     	 push {r7,lr}
+ 465              	.LCFI15:
+ 466              	 .cfi_def_cfa_offset 8
+ 467              	 .cfi_offset 7,-8
+ 468              	 .cfi_offset 14,-4
+ 469 0002 90B0     	 sub sp,sp,#64
+ 470              	.LCFI16:
+ 471              	 .cfi_def_cfa_offset 72
+ 472 0004 00AF     	 add r7,sp,#0
+ 473              	.LCFI17:
+ 474              	 .cfi_def_cfa_register 7
+ 475 0006 F860     	 str r0,[r7,#12]
+ 476 0008 B960     	 str r1,[r7,#8]
+ 477 000a 7A60     	 str r2,[r7,#4]
+ 478 000c 3B60     	 str r3,[r7]
+ 321:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t * pxEventBits = xEventGroup;
+ 479              	 .loc 1 321 0
+ 480 000e FB68     	 ldr r3,[r7,#12]
+ 481 0010 7B63     	 str r3,[r7,#52]
+ 322:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxReturn, uxControlBits = 0;
+ 482              	 .loc 1 322 0
+ 483 0012 0023     	 movs r3,#0
+ 484 0014 BB63     	 str r3,[r7,#56]
+ 323:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xWaitConditionMet, xAlreadyYielded;
+ 324:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xTimeoutOccurred = pdFALSE;
+ 485              	 .loc 1 324 0
+ 486 0016 0023     	 movs r3,#0
+ 487 0018 3B63     	 str r3,[r7,#48]
+ 325:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 326:../Dave/Generated/FREERTOS/event_groups.c ****     /* Check the user is not attempting to wait on the bits used by the kernel
+ 327:../Dave/Generated/FREERTOS/event_groups.c ****      * itself, and that at least one bit is being requested. */
+ 328:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( xEventGroup );
+ 488              	 .loc 1 328 0
+ 489 001a FB68     	 ldr r3,[r7,#12]
+ 490 001c 002B     	 cmp r3,#0
+ 491 001e 09D1     	 bne .L32
+ 492              	.LBB47:
+ 493              	.LBB48:
+ 494              	 .loc 2 197 0 discriminator 1
+ 495              	
+ 496 0020 4FF0FC03 	 mov r3,#252
+ 497 0024 83F31188 	 msr basepri,r3
+ 498 0028 BFF36F8F 	 isb 
+ 499 002c BFF34F8F 	 dsb 
+ 500              	
+ 501              	
+ 502              	 .thumb
+ 503 0030 3B62     	 str r3,[r7,#32]
+ 504              	.L33:
+ 505              	.LBE48:
+ 506              	.LBE47:
+ 507              	 .loc 1 328 0 discriminator 1
+ 508 0032 FEE7     	 b .L33
+ 509              	.L32:
+ 329:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+ 510              	 .loc 1 329 0
+ 511 0034 BB68     	 ldr r3,[r7,#8]
+ 512 0036 03F07F43 	 and r3,r3,#-16777216
+ 513 003a 002B     	 cmp r3,#0
+ 514 003c 09D0     	 beq .L34
+ 515              	.LBB49:
+ 516              	.LBB50:
+ 517              	 .loc 2 197 0 discriminator 1
+ 518              	
+ 519 003e 4FF0FC03 	 mov r3,#252
+ 520 0042 83F31188 	 msr basepri,r3
+ 521 0046 BFF36F8F 	 isb 
+ 522 004a BFF34F8F 	 dsb 
+ 523              	
+ 524              	
+ 525              	 .thumb
+ 526 004e FB61     	 str r3,[r7,#28]
+ 527              	.L35:
+ 528              	.LBE50:
+ 529              	.LBE49:
+ 530              	 .loc 1 329 0 discriminator 2
+ 531 0050 FEE7     	 b .L35
+ 532              	.L34:
+ 330:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( uxBitsToWaitFor != 0 );
+ 533              	 .loc 1 330 0
+ 534 0052 BB68     	 ldr r3,[r7,#8]
+ 535 0054 002B     	 cmp r3,#0
+ 536 0056 09D1     	 bne .L36
+ 537              	.LBB51:
+ 538              	.LBB52:
+ 539              	 .loc 2 197 0 discriminator 1
+ 540              	
+ 541 0058 4FF0FC03 	 mov r3,#252
+ 542 005c 83F31188 	 msr basepri,r3
+ 543 0060 BFF36F8F 	 isb 
+ 544 0064 BFF34F8F 	 dsb 
+ 545              	
+ 546              	
+ 547              	 .thumb
+ 548 0068 BB61     	 str r3,[r7,#24]
+ 549              	.L37:
+ 550              	.LBE52:
+ 551              	.LBE51:
+ 552              	 .loc 1 330 0 discriminator 3
+ 553 006a FEE7     	 b .L37
+ 554              	.L36:
+ 331:../Dave/Generated/FREERTOS/event_groups.c ****     #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+ 332:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 333:../Dave/Generated/FREERTOS/event_groups.c ****             configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToW
+ 555              	 .loc 1 333 0
+ 556 006c FFF7FEFF 	 bl xTaskGetSchedulerState
+ 557 0070 0346     	 mov r3,r0
+ 558 0072 002B     	 cmp r3,#0
+ 559 0074 02D1     	 bne .L38
+ 560              	 .loc 1 333 0 is_stmt 0 discriminator 2
+ 561 0076 BB6C     	 ldr r3,[r7,#72]
+ 562 0078 002B     	 cmp r3,#0
+ 563 007a 01D1     	 bne .L39
+ 564              	.L38:
+ 565              	 .loc 1 333 0 discriminator 3
+ 566 007c 0123     	 movs r3,#1
+ 567 007e 00E0     	 b .L40
+ 568              	.L39:
+ 569              	 .loc 1 333 0 discriminator 4
+ 570 0080 0023     	 movs r3,#0
+ 571              	.L40:
+ 572              	 .loc 1 333 0 discriminator 6
+ 573 0082 002B     	 cmp r3,#0
+ 574 0084 09D1     	 bne .L41
+ 575              	.LBB53:
+ 576              	.LBB54:
+ 577              	 .loc 2 197 0 is_stmt 1 discriminator 7
+ 578              	
+ 579 0086 4FF0FC03 	 mov r3,#252
+ 580 008a 83F31188 	 msr basepri,r3
+ 581 008e BFF36F8F 	 isb 
+ 582 0092 BFF34F8F 	 dsb 
+ 583              	
+ 584              	
+ 585              	 .thumb
+ 586 0096 7B61     	 str r3,[r7,#20]
+ 587              	.L42:
+ 588              	.LBE54:
+ 589              	.LBE53:
+ 590              	 .loc 1 333 0 discriminator 4
+ 591 0098 FEE7     	 b .L42
+ 592              	.L41:
+ 334:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 335:../Dave/Generated/FREERTOS/event_groups.c ****     #endif
+ 336:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 337:../Dave/Generated/FREERTOS/event_groups.c ****     vTaskSuspendAll();
+ 593              	 .loc 1 337 0
+ 594 009a FFF7FEFF 	 bl vTaskSuspendAll
+ 595              	.LBB55:
+ 338:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 339:../Dave/Generated/FREERTOS/event_groups.c ****         const EventBits_t uxCurrentEventBits = pxEventBits->uxEventBits;
+ 596              	 .loc 1 339 0
+ 597 009e 7B6B     	 ldr r3,[r7,#52]
+ 598 00a0 1B68     	 ldr r3,[r3]
+ 599 00a2 FB62     	 str r3,[r7,#44]
+ 340:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 341:../Dave/Generated/FREERTOS/event_groups.c ****         /* Check to see if the wait condition is already met or not. */
+ 342:../Dave/Generated/FREERTOS/event_groups.c ****         xWaitConditionMet = prvTestWaitCondition( uxCurrentEventBits, uxBitsToWaitFor, xWaitForAllB
+ 600              	 .loc 1 342 0
+ 601 00a4 F86A     	 ldr r0,[r7,#44]
+ 602 00a6 B968     	 ldr r1,[r7,#8]
+ 603 00a8 3A68     	 ldr r2,[r7]
+ 604 00aa FFF7FEFF 	 bl prvTestWaitCondition
+ 605 00ae B862     	 str r0,[r7,#40]
+ 343:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 344:../Dave/Generated/FREERTOS/event_groups.c ****         if( xWaitConditionMet != pdFALSE )
+ 606              	 .loc 1 344 0
+ 607 00b0 BB6A     	 ldr r3,[r7,#40]
+ 608 00b2 002B     	 cmp r3,#0
+ 609 00b4 0ED0     	 beq .L43
+ 345:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 346:../Dave/Generated/FREERTOS/event_groups.c ****             /* The wait condition has already been met so there is no need to
+ 347:../Dave/Generated/FREERTOS/event_groups.c ****              * block. */
+ 348:../Dave/Generated/FREERTOS/event_groups.c ****             uxReturn = uxCurrentEventBits;
+ 610              	 .loc 1 348 0
+ 611 00b6 FB6A     	 ldr r3,[r7,#44]
+ 612 00b8 FB63     	 str r3,[r7,#60]
+ 349:../Dave/Generated/FREERTOS/event_groups.c ****             xTicksToWait = ( TickType_t ) 0;
+ 613              	 .loc 1 349 0
+ 614 00ba 0023     	 movs r3,#0
+ 615 00bc BB64     	 str r3,[r7,#72]
+ 350:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 351:../Dave/Generated/FREERTOS/event_groups.c ****             /* Clear the wait bits if requested to do so. */
+ 352:../Dave/Generated/FREERTOS/event_groups.c ****             if( xClearOnExit != pdFALSE )
+ 616              	 .loc 1 352 0
+ 617 00be 7B68     	 ldr r3,[r7,#4]
+ 618 00c0 002B     	 cmp r3,#0
+ 619 00c2 29D0     	 beq .L44
+ 353:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 354:../Dave/Generated/FREERTOS/event_groups.c ****                 pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+ 620              	 .loc 1 354 0
+ 621 00c4 7B6B     	 ldr r3,[r7,#52]
+ 622 00c6 1A68     	 ldr r2,[r3]
+ 623 00c8 BB68     	 ldr r3,[r7,#8]
+ 624 00ca DB43     	 mvns r3,r3
+ 625 00cc 1A40     	 ands r2,r2,r3
+ 626 00ce 7B6B     	 ldr r3,[r7,#52]
+ 627 00d0 1A60     	 str r2,[r3]
+ 628 00d2 21E0     	 b .L44
+ 629              	.L43:
+ 355:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 356:../Dave/Generated/FREERTOS/event_groups.c ****             else
+ 357:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 358:../Dave/Generated/FREERTOS/event_groups.c ****                 mtCOVERAGE_TEST_MARKER();
+ 359:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 360:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 361:../Dave/Generated/FREERTOS/event_groups.c ****         else if( xTicksToWait == ( TickType_t ) 0 )
+ 630              	 .loc 1 361 0
+ 631 00d4 BB6C     	 ldr r3,[r7,#72]
+ 632 00d6 002B     	 cmp r3,#0
+ 633 00d8 04D1     	 bne .L45
+ 362:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 363:../Dave/Generated/FREERTOS/event_groups.c ****             /* The wait condition has not been met, but no block time was
+ 364:../Dave/Generated/FREERTOS/event_groups.c ****              * specified, so just return the current value. */
+ 365:../Dave/Generated/FREERTOS/event_groups.c ****             uxReturn = uxCurrentEventBits;
+ 634              	 .loc 1 365 0
+ 635 00da FB6A     	 ldr r3,[r7,#44]
+ 636 00dc FB63     	 str r3,[r7,#60]
+ 366:../Dave/Generated/FREERTOS/event_groups.c ****             xTimeoutOccurred = pdTRUE;
+ 637              	 .loc 1 366 0
+ 638 00de 0123     	 movs r3,#1
+ 639 00e0 3B63     	 str r3,[r7,#48]
+ 640 00e2 19E0     	 b .L44
+ 641              	.L45:
+ 367:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 368:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 369:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 370:../Dave/Generated/FREERTOS/event_groups.c ****             /* The task is going to block to wait for its required bits to be
+ 371:../Dave/Generated/FREERTOS/event_groups.c ****              * set.  uxControlBits are used to remember the specified behaviour of
+ 372:../Dave/Generated/FREERTOS/event_groups.c ****              * this call to xEventGroupWaitBits() - for use when the event bits
+ 373:../Dave/Generated/FREERTOS/event_groups.c ****              * unblock the task. */
+ 374:../Dave/Generated/FREERTOS/event_groups.c ****             if( xClearOnExit != pdFALSE )
+ 642              	 .loc 1 374 0
+ 643 00e4 7B68     	 ldr r3,[r7,#4]
+ 644 00e6 002B     	 cmp r3,#0
+ 645 00e8 03D0     	 beq .L46
+ 375:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 376:../Dave/Generated/FREERTOS/event_groups.c ****                 uxControlBits |= eventCLEAR_EVENTS_ON_EXIT_BIT;
+ 646              	 .loc 1 376 0
+ 647 00ea BB6B     	 ldr r3,[r7,#56]
+ 648 00ec 43F08073 	 orr r3,r3,#16777216
+ 649 00f0 BB63     	 str r3,[r7,#56]
+ 650              	.L46:
+ 377:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 378:../Dave/Generated/FREERTOS/event_groups.c ****             else
+ 379:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 380:../Dave/Generated/FREERTOS/event_groups.c ****                 mtCOVERAGE_TEST_MARKER();
+ 381:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 382:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 383:../Dave/Generated/FREERTOS/event_groups.c ****             if( xWaitForAllBits != pdFALSE )
+ 651              	 .loc 1 383 0
+ 652 00f2 3B68     	 ldr r3,[r7]
+ 653 00f4 002B     	 cmp r3,#0
+ 654 00f6 03D0     	 beq .L47
+ 384:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 385:../Dave/Generated/FREERTOS/event_groups.c ****                 uxControlBits |= eventWAIT_FOR_ALL_BITS;
+ 655              	 .loc 1 385 0
+ 656 00f8 BB6B     	 ldr r3,[r7,#56]
+ 657 00fa 43F08063 	 orr r3,r3,#67108864
+ 658 00fe BB63     	 str r3,[r7,#56]
+ 659              	.L47:
+ 386:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 387:../Dave/Generated/FREERTOS/event_groups.c ****             else
+ 388:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 389:../Dave/Generated/FREERTOS/event_groups.c ****                 mtCOVERAGE_TEST_MARKER();
+ 390:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 391:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 392:../Dave/Generated/FREERTOS/event_groups.c ****             /* Store the bits that the calling task is waiting for in the
+ 393:../Dave/Generated/FREERTOS/event_groups.c ****              * task's event list item so the kernel knows when a match is
+ 394:../Dave/Generated/FREERTOS/event_groups.c ****              * found.  Then enter the blocked state. */
+ 395:../Dave/Generated/FREERTOS/event_groups.c ****             vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToWaitF
+ 660              	 .loc 1 395 0
+ 661 0100 7B6B     	 ldr r3,[r7,#52]
+ 662 0102 191D     	 adds r1,r3,#4
+ 663 0104 BA68     	 ldr r2,[r7,#8]
+ 664 0106 BB6B     	 ldr r3,[r7,#56]
+ 665 0108 1343     	 orrs r3,r3,r2
+ 666 010a 0846     	 mov r0,r1
+ 667 010c 1946     	 mov r1,r3
+ 668 010e BA6C     	 ldr r2,[r7,#72]
+ 669 0110 FFF7FEFF 	 bl vTaskPlaceOnUnorderedEventList
+ 396:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 397:../Dave/Generated/FREERTOS/event_groups.c ****             /* This is obsolete as it will get set after the task unblocks, but
+ 398:../Dave/Generated/FREERTOS/event_groups.c ****              * some compilers mistakenly generate a warning about the variable
+ 399:../Dave/Generated/FREERTOS/event_groups.c ****              * being returned without being set if it is not done. */
+ 400:../Dave/Generated/FREERTOS/event_groups.c ****             uxReturn = 0;
+ 670              	 .loc 1 400 0
+ 671 0114 0023     	 movs r3,#0
+ 672 0116 FB63     	 str r3,[r7,#60]
+ 673              	.L44:
+ 674              	.LBE55:
+ 401:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 402:../Dave/Generated/FREERTOS/event_groups.c ****             traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor );
+ 403:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 404:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 405:../Dave/Generated/FREERTOS/event_groups.c ****     xAlreadyYielded = xTaskResumeAll();
+ 675              	 .loc 1 405 0
+ 676 0118 FFF7FEFF 	 bl xTaskResumeAll
+ 677 011c 7862     	 str r0,[r7,#36]
+ 406:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 407:../Dave/Generated/FREERTOS/event_groups.c ****     if( xTicksToWait != ( TickType_t ) 0 )
+ 678              	 .loc 1 407 0
+ 679 011e BB6C     	 ldr r3,[r7,#72]
+ 680 0120 002B     	 cmp r3,#0
+ 681 0122 31D0     	 beq .L48
+ 408:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 409:../Dave/Generated/FREERTOS/event_groups.c ****         if( xAlreadyYielded == pdFALSE )
+ 682              	 .loc 1 409 0
+ 683 0124 7B6A     	 ldr r3,[r7,#36]
+ 684 0126 002B     	 cmp r3,#0
+ 685 0128 07D1     	 bne .L49
+ 410:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 411:../Dave/Generated/FREERTOS/event_groups.c ****             portYIELD_WITHIN_API();
+ 686              	 .loc 1 411 0
+ 687 012a 1A4B     	 ldr r3,.L53
+ 688 012c 4FF08052 	 mov r2,#268435456
+ 689 0130 1A60     	 str r2,[r3]
+ 690              	
+ 691 0132 BFF34F8F 	 dsb
+ 692              	
+ 693              	
+ 694 0136 BFF36F8F 	 isb
+ 695              	
+ 696              	 .thumb
+ 697              	.L49:
+ 412:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 413:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 414:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 415:../Dave/Generated/FREERTOS/event_groups.c ****             mtCOVERAGE_TEST_MARKER();
+ 416:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 417:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 418:../Dave/Generated/FREERTOS/event_groups.c ****         /* The task blocked to wait for its required bits to be set - at this
+ 419:../Dave/Generated/FREERTOS/event_groups.c ****          * point either the required bits were set or the block time expired.  If
+ 420:../Dave/Generated/FREERTOS/event_groups.c ****          * the required bits were set they will have been stored in the task's
+ 421:../Dave/Generated/FREERTOS/event_groups.c ****          * event list item, and they should now be retrieved then cleared. */
+ 422:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn = uxTaskResetEventItemValue();
+ 698              	 .loc 1 422 0
+ 699 013a FFF7FEFF 	 bl uxTaskResetEventItemValue
+ 700 013e F863     	 str r0,[r7,#60]
+ 423:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 424:../Dave/Generated/FREERTOS/event_groups.c ****         if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+ 701              	 .loc 1 424 0
+ 702 0140 FB6B     	 ldr r3,[r7,#60]
+ 703 0142 03F00073 	 and r3,r3,#33554432
+ 704 0146 002B     	 cmp r3,#0
+ 705 0148 1AD1     	 bne .L50
+ 425:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 426:../Dave/Generated/FREERTOS/event_groups.c ****             taskENTER_CRITICAL();
+ 706              	 .loc 1 426 0
+ 707 014a FFF7FEFF 	 bl vPortEnterCritical
+ 427:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 428:../Dave/Generated/FREERTOS/event_groups.c ****                 /* The task timed out, just return the current event bit value. */
+ 429:../Dave/Generated/FREERTOS/event_groups.c ****                 uxReturn = pxEventBits->uxEventBits;
+ 708              	 .loc 1 429 0
+ 709 014e 7B6B     	 ldr r3,[r7,#52]
+ 710 0150 1B68     	 ldr r3,[r3]
+ 711 0152 FB63     	 str r3,[r7,#60]
+ 430:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 431:../Dave/Generated/FREERTOS/event_groups.c ****                 /* It is possible that the event bits were updated between this
+ 432:../Dave/Generated/FREERTOS/event_groups.c ****                  * task leaving the Blocked state and running again. */
+ 433:../Dave/Generated/FREERTOS/event_groups.c ****                 if( prvTestWaitCondition( uxReturn, uxBitsToWaitFor, xWaitForAllBits ) != pdFALSE )
+ 712              	 .loc 1 433 0
+ 713 0154 F86B     	 ldr r0,[r7,#60]
+ 714 0156 B968     	 ldr r1,[r7,#8]
+ 715 0158 3A68     	 ldr r2,[r7]
+ 716 015a FFF7FEFF 	 bl prvTestWaitCondition
+ 717 015e 0346     	 mov r3,r0
+ 718 0160 002B     	 cmp r3,#0
+ 719 0162 09D0     	 beq .L51
+ 434:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 435:../Dave/Generated/FREERTOS/event_groups.c ****                     if( xClearOnExit != pdFALSE )
+ 720              	 .loc 1 435 0
+ 721 0164 7B68     	 ldr r3,[r7,#4]
+ 722 0166 002B     	 cmp r3,#0
+ 723 0168 06D0     	 beq .L51
+ 436:../Dave/Generated/FREERTOS/event_groups.c ****                     {
+ 437:../Dave/Generated/FREERTOS/event_groups.c ****                         pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+ 724              	 .loc 1 437 0
+ 725 016a 7B6B     	 ldr r3,[r7,#52]
+ 726 016c 1A68     	 ldr r2,[r3]
+ 727 016e BB68     	 ldr r3,[r7,#8]
+ 728 0170 DB43     	 mvns r3,r3
+ 729 0172 1A40     	 ands r2,r2,r3
+ 730 0174 7B6B     	 ldr r3,[r7,#52]
+ 731 0176 1A60     	 str r2,[r3]
+ 732              	.L51:
+ 438:../Dave/Generated/FREERTOS/event_groups.c ****                     }
+ 439:../Dave/Generated/FREERTOS/event_groups.c ****                     else
+ 440:../Dave/Generated/FREERTOS/event_groups.c ****                     {
+ 441:../Dave/Generated/FREERTOS/event_groups.c ****                         mtCOVERAGE_TEST_MARKER();
+ 442:../Dave/Generated/FREERTOS/event_groups.c ****                     }
+ 443:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 444:../Dave/Generated/FREERTOS/event_groups.c ****                 else
+ 445:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 446:../Dave/Generated/FREERTOS/event_groups.c ****                     mtCOVERAGE_TEST_MARKER();
+ 447:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 448:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 449:../Dave/Generated/FREERTOS/event_groups.c ****                 xTimeoutOccurred = pdTRUE;
+ 733              	 .loc 1 449 0
+ 734 0178 0123     	 movs r3,#1
+ 735 017a 3B63     	 str r3,[r7,#48]
+ 450:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 451:../Dave/Generated/FREERTOS/event_groups.c ****             taskEXIT_CRITICAL();
+ 736              	 .loc 1 451 0
+ 737 017c FFF7FEFF 	 bl vPortExitCritical
+ 738              	.L50:
+ 452:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 453:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 454:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 455:../Dave/Generated/FREERTOS/event_groups.c ****             /* The task unblocked because the bits were set. */
+ 456:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 457:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 458:../Dave/Generated/FREERTOS/event_groups.c ****         /* The task blocked so control bits may have been set. */
+ 459:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+ 739              	 .loc 1 459 0
+ 740 0180 FB6B     	 ldr r3,[r7,#60]
+ 741 0182 23F07F43 	 bic r3,r3,#-16777216
+ 742 0186 FB63     	 str r3,[r7,#60]
+ 743              	.L48:
+ 460:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 461:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 462:../Dave/Generated/FREERTOS/event_groups.c ****     traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred );
+ 463:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 464:../Dave/Generated/FREERTOS/event_groups.c ****     /* Prevent compiler warnings when trace macros are not used. */
+ 465:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xTimeoutOccurred;
+ 466:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 467:../Dave/Generated/FREERTOS/event_groups.c ****     return uxReturn;
+ 744              	 .loc 1 467 0
+ 745 0188 FB6B     	 ldr r3,[r7,#60]
+ 468:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 746              	 .loc 1 468 0
+ 747 018a 1846     	 mov r0,r3
+ 748 018c 4037     	 adds r7,r7,#64
+ 749              	.LCFI18:
+ 750              	 .cfi_def_cfa_offset 8
+ 751 018e BD46     	 mov sp,r7
+ 752              	.LCFI19:
+ 753              	 .cfi_def_cfa_register 13
+ 754              	 
+ 755 0190 80BD     	 pop {r7,pc}
+ 756              	.L54:
+ 757 0192 00BF     	 .align 2
+ 758              	.L53:
+ 759 0194 04ED00E0 	 .word -536810236
+ 760              	 .cfi_endproc
+ 761              	.LFE140:
+ 763              	 .section .text.xEventGroupClearBits,"ax",%progbits
+ 764              	 .align 2
+ 765              	 .global xEventGroupClearBits
+ 766              	 .thumb
+ 767              	 .thumb_func
+ 769              	xEventGroupClearBits:
+ 770              	.LFB141:
+ 469:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 470:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 471:../Dave/Generated/FREERTOS/event_groups.c **** EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
+ 472:../Dave/Generated/FREERTOS/event_groups.c ****                                   const EventBits_t uxBitsToClear )
+ 473:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 771              	 .loc 1 473 0
+ 772              	 .cfi_startproc
+ 773              	 
+ 774              	 
+ 775 0000 80B5     	 push {r7,lr}
+ 776              	.LCFI20:
+ 777              	 .cfi_def_cfa_offset 8
+ 778              	 .cfi_offset 7,-8
+ 779              	 .cfi_offset 14,-4
+ 780 0002 86B0     	 sub sp,sp,#24
+ 781              	.LCFI21:
+ 782              	 .cfi_def_cfa_offset 32
+ 783 0004 00AF     	 add r7,sp,#0
+ 784              	.LCFI22:
+ 785              	 .cfi_def_cfa_register 7
+ 786 0006 7860     	 str r0,[r7,#4]
+ 787 0008 3960     	 str r1,[r7]
+ 474:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t * pxEventBits = xEventGroup;
+ 788              	 .loc 1 474 0
+ 789 000a 7B68     	 ldr r3,[r7,#4]
+ 790 000c 7B61     	 str r3,[r7,#20]
+ 475:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxReturn;
+ 476:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 477:../Dave/Generated/FREERTOS/event_groups.c ****     /* Check the user is not attempting to clear the bits used by the kernel
+ 478:../Dave/Generated/FREERTOS/event_groups.c ****      * itself. */
+ 479:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( xEventGroup );
+ 791              	 .loc 1 479 0
+ 792 000e 7B68     	 ldr r3,[r7,#4]
+ 793 0010 002B     	 cmp r3,#0
+ 794 0012 09D1     	 bne .L56
+ 795              	.LBB56:
+ 796              	.LBB57:
+ 797              	 .loc 2 197 0 discriminator 1
+ 798              	
+ 799 0014 4FF0FC03 	 mov r3,#252
+ 800 0018 83F31188 	 msr basepri,r3
+ 801 001c BFF36F8F 	 isb 
+ 802 0020 BFF34F8F 	 dsb 
+ 803              	
+ 804              	
+ 805              	 .thumb
+ 806 0024 FB60     	 str r3,[r7,#12]
+ 807              	.L57:
+ 808              	.LBE57:
+ 809              	.LBE56:
+ 810              	 .loc 1 479 0 discriminator 1
+ 811 0026 FEE7     	 b .L57
+ 812              	.L56:
+ 480:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( ( uxBitsToClear & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+ 813              	 .loc 1 480 0
+ 814 0028 3B68     	 ldr r3,[r7]
+ 815 002a 03F07F43 	 and r3,r3,#-16777216
+ 816 002e 002B     	 cmp r3,#0
+ 817 0030 09D0     	 beq .L58
+ 818              	.LBB58:
+ 819              	.LBB59:
+ 820              	 .loc 2 197 0 discriminator 1
+ 821              	
+ 822 0032 4FF0FC03 	 mov r3,#252
+ 823 0036 83F31188 	 msr basepri,r3
+ 824 003a BFF36F8F 	 isb 
+ 825 003e BFF34F8F 	 dsb 
+ 826              	
+ 827              	
+ 828              	 .thumb
+ 829 0042 BB60     	 str r3,[r7,#8]
+ 830              	.L59:
+ 831              	.LBE59:
+ 832              	.LBE58:
+ 833              	 .loc 1 480 0 discriminator 2
+ 834 0044 FEE7     	 b .L59
+ 835              	.L58:
+ 481:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 482:../Dave/Generated/FREERTOS/event_groups.c ****     taskENTER_CRITICAL();
+ 836              	 .loc 1 482 0
+ 837 0046 FFF7FEFF 	 bl vPortEnterCritical
+ 483:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 484:../Dave/Generated/FREERTOS/event_groups.c ****         traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear );
+ 485:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 486:../Dave/Generated/FREERTOS/event_groups.c ****         /* The value returned is the event group value prior to the bits being
+ 487:../Dave/Generated/FREERTOS/event_groups.c ****          * cleared. */
+ 488:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn = pxEventBits->uxEventBits;
+ 838              	 .loc 1 488 0
+ 839 004a 7B69     	 ldr r3,[r7,#20]
+ 840 004c 1B68     	 ldr r3,[r3]
+ 841 004e 3B61     	 str r3,[r7,#16]
+ 489:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 490:../Dave/Generated/FREERTOS/event_groups.c ****         /* Clear the bits. */
+ 491:../Dave/Generated/FREERTOS/event_groups.c ****         pxEventBits->uxEventBits &= ~uxBitsToClear;
+ 842              	 .loc 1 491 0
+ 843 0050 7B69     	 ldr r3,[r7,#20]
+ 844 0052 1A68     	 ldr r2,[r3]
+ 845 0054 3B68     	 ldr r3,[r7]
+ 846 0056 DB43     	 mvns r3,r3
+ 847 0058 1A40     	 ands r2,r2,r3
+ 848 005a 7B69     	 ldr r3,[r7,#20]
+ 849 005c 1A60     	 str r2,[r3]
+ 492:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 493:../Dave/Generated/FREERTOS/event_groups.c ****     taskEXIT_CRITICAL();
+ 850              	 .loc 1 493 0
+ 851 005e FFF7FEFF 	 bl vPortExitCritical
+ 494:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 495:../Dave/Generated/FREERTOS/event_groups.c ****     return uxReturn;
+ 852              	 .loc 1 495 0
+ 853 0062 3B69     	 ldr r3,[r7,#16]
+ 496:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 854              	 .loc 1 496 0
+ 855 0064 1846     	 mov r0,r3
+ 856 0066 1837     	 adds r7,r7,#24
+ 857              	.LCFI23:
+ 858              	 .cfi_def_cfa_offset 8
+ 859 0068 BD46     	 mov sp,r7
+ 860              	.LCFI24:
+ 861              	 .cfi_def_cfa_register 13
+ 862              	 
+ 863 006a 80BD     	 pop {r7,pc}
+ 864              	 .cfi_endproc
+ 865              	.LFE141:
+ 867              	 .section .text.xEventGroupClearBitsFromISR,"ax",%progbits
+ 868              	 .align 2
+ 869              	 .global xEventGroupClearBitsFromISR
+ 870              	 .thumb
+ 871              	 .thumb_func
+ 873              	xEventGroupClearBitsFromISR:
+ 874              	.LFB142:
+ 497:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 498:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 499:../Dave/Generated/FREERTOS/event_groups.c **** #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_T
+ 500:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 501:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
+ 502:../Dave/Generated/FREERTOS/event_groups.c ****                                             const EventBits_t uxBitsToClear )
+ 503:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 875              	 .loc 1 503 0
+ 876              	 .cfi_startproc
+ 877              	 
+ 878              	 
+ 879 0000 80B5     	 push {r7,lr}
+ 880              	.LCFI25:
+ 881              	 .cfi_def_cfa_offset 8
+ 882              	 .cfi_offset 7,-8
+ 883              	 .cfi_offset 14,-4
+ 884 0002 84B0     	 sub sp,sp,#16
+ 885              	.LCFI26:
+ 886              	 .cfi_def_cfa_offset 24
+ 887 0004 00AF     	 add r7,sp,#0
+ 888              	.LCFI27:
+ 889              	 .cfi_def_cfa_register 7
+ 890 0006 7860     	 str r0,[r7,#4]
+ 891 0008 3960     	 str r1,[r7]
+ 504:../Dave/Generated/FREERTOS/event_groups.c ****         BaseType_t xReturn;
+ 505:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 506:../Dave/Generated/FREERTOS/event_groups.c ****         traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear );
+ 507:../Dave/Generated/FREERTOS/event_groups.c ****         xReturn = xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) xEventGro
+ 892              	 .loc 1 507 0
+ 893 000a 0648     	 ldr r0,.L63
+ 894 000c 7968     	 ldr r1,[r7,#4]
+ 895 000e 3A68     	 ldr r2,[r7]
+ 896 0010 0023     	 movs r3,#0
+ 897 0012 FFF7FEFF 	 bl xTimerPendFunctionCallFromISR
+ 898 0016 F860     	 str r0,[r7,#12]
+ 508:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 509:../Dave/Generated/FREERTOS/event_groups.c ****         return xReturn;
+ 899              	 .loc 1 509 0
+ 900 0018 FB68     	 ldr r3,[r7,#12]
+ 510:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 901              	 .loc 1 510 0
+ 902 001a 1846     	 mov r0,r3
+ 903 001c 1037     	 adds r7,r7,#16
+ 904              	.LCFI28:
+ 905              	 .cfi_def_cfa_offset 8
+ 906 001e BD46     	 mov sp,r7
+ 907              	.LCFI29:
+ 908              	 .cfi_def_cfa_register 13
+ 909              	 
+ 910 0020 80BD     	 pop {r7,pc}
+ 911              	.L64:
+ 912 0022 00BF     	 .align 2
+ 913              	.L63:
+ 914 0024 00000000 	 .word vEventGroupClearBitsCallback
+ 915              	 .cfi_endproc
+ 916              	.LFE142:
+ 918              	 .section .text.xEventGroupGetBitsFromISR,"ax",%progbits
+ 919              	 .align 2
+ 920              	 .global xEventGroupGetBitsFromISR
+ 921              	 .thumb
+ 922              	 .thumb_func
+ 924              	xEventGroupGetBitsFromISR:
+ 925              	.LFB143:
+ 511:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 512:../Dave/Generated/FREERTOS/event_groups.c **** #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( co
+ 513:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 514:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 515:../Dave/Generated/FREERTOS/event_groups.c **** EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup )
+ 516:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 926              	 .loc 1 516 0
+ 927              	 .cfi_startproc
+ 928              	 
+ 929              	 
+ 930              	 
+ 931 0000 80B4     	 push {r7}
+ 932              	.LCFI30:
+ 933              	 .cfi_def_cfa_offset 4
+ 934              	 .cfi_offset 7,-4
+ 935 0002 89B0     	 sub sp,sp,#36
+ 936              	.LCFI31:
+ 937              	 .cfi_def_cfa_offset 40
+ 938 0004 00AF     	 add r7,sp,#0
+ 939              	.LCFI32:
+ 940              	 .cfi_def_cfa_register 7
+ 941 0006 7860     	 str r0,[r7,#4]
+ 517:../Dave/Generated/FREERTOS/event_groups.c ****     UBaseType_t uxSavedInterruptStatus;
+ 518:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t const * const pxEventBits = xEventGroup;
+ 942              	 .loc 1 518 0
+ 943 0008 7B68     	 ldr r3,[r7,#4]
+ 944 000a FB61     	 str r3,[r7,#28]
+ 945              	.LBB60:
+ 946              	.LBB61:
+ 198:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         (
+ 199:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	mov %0, %1												\n"\
+ 200:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	msr basepri, %0											\n"\
+ 201:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	isb														\n"\
+ 202:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	dsb														\n"\
+ 203:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             : "=r" ( ulNewBASEPRI ) : "i" ( configMAX_SYSCALL_INTERRUPT_PRIORITY ) : "memory"
+ 204:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         );
+ 205:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     }
+ 206:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 207:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 208:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 209:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     portFORCE_INLINE static uint32_t ulPortRaiseBASEPRI( void )
+ 210:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     {
+ 211:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         uint32_t ulOriginalBASEPRI, ulNewBASEPRI;
+ 212:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 213:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile
+ 947              	 .loc 2 213 0
+ 948              	
+ 949 000c EFF31182 	 mrs r2,basepri
+ 950 0010 4FF0FC03 	 mov r3,#252
+ 951 0014 83F31188 	 msr basepri,r3
+ 952 0018 BFF36F8F 	 isb 
+ 953 001c BFF34F8F 	 dsb 
+ 954              	
+ 955              	
+ 956              	 .thumb
+ 957 0020 3A61     	 str r2,[r7,#16]
+ 958 0022 FB60     	 str r3,[r7,#12]
+ 214:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         (
+ 215:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	mrs %0, basepri											\n"\
+ 216:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	mov %1, %2												\n"\
+ 217:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	msr basepri, %1											\n"\
+ 218:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	isb														\n"\
+ 219:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             "	dsb														\n"\
+ 220:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****             : "=r" ( ulOriginalBASEPRI ), "=r" ( ulNewBASEPRI ) : "i" ( configMAX_SYSCALL_INTERRUPT
+ 221:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         );
+ 222:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 223:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         /* This return will not be reached but is necessary to prevent compiler
+ 224:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****          * warnings. */
+ 225:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         return ulOriginalBASEPRI;
+ 959              	 .loc 2 225 0
+ 960 0024 3B69     	 ldr r3,[r7,#16]
+ 961              	.LBE61:
+ 962              	.LBE60:
+ 519:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxReturn;
+ 520:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 521:../Dave/Generated/FREERTOS/event_groups.c ****     uxSavedInterruptStatus = portSET_INTERRUPT_MASK_FROM_ISR();
+ 963              	 .loc 1 521 0
+ 964 0026 BB61     	 str r3,[r7,#24]
+ 522:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 523:../Dave/Generated/FREERTOS/event_groups.c ****         uxReturn = pxEventBits->uxEventBits;
+ 965              	 .loc 1 523 0
+ 966 0028 FB69     	 ldr r3,[r7,#28]
+ 967 002a 1B68     	 ldr r3,[r3]
+ 968 002c 7B61     	 str r3,[r7,#20]
+ 969 002e BB69     	 ldr r3,[r7,#24]
+ 970 0030 BB60     	 str r3,[r7,#8]
+ 971              	.LBB62:
+ 972              	.LBB63:
+ 226:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     }
+ 227:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** /*-----------------------------------------------------------*/
+ 228:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h **** 
+ 229:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     portFORCE_INLINE static void vPortSetBASEPRI( uint32_t ulNewMaskValue )
+ 230:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****     {
+ 231:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         __asm volatile
+ 973              	 .loc 2 231 0
+ 974 0032 BB68     	 ldr r3,[r7,#8]
+ 975              	
+ 976 0034 83F31188 	 msr basepri,r3
+ 977              	
+ 978              	 .thumb
+ 979              	.LBE63:
+ 980              	.LBE62:
+ 524:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 525:../Dave/Generated/FREERTOS/event_groups.c ****     portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedInterruptStatus );
+ 526:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 527:../Dave/Generated/FREERTOS/event_groups.c ****     return uxReturn;
+ 981              	 .loc 1 527 0
+ 982 0038 7B69     	 ldr r3,[r7,#20]
+ 528:../Dave/Generated/FREERTOS/event_groups.c **** } /*lint !e818 EventGroupHandle_t is a typedef used in other functions to so can't be pointer to co
+ 983              	 .loc 1 528 0
+ 984 003a 1846     	 mov r0,r3
+ 985 003c 2437     	 adds r7,r7,#36
+ 986              	.LCFI33:
+ 987              	 .cfi_def_cfa_offset 4
+ 988 003e BD46     	 mov sp,r7
+ 989              	.LCFI34:
+ 990              	 .cfi_def_cfa_register 13
+ 991              	 
+ 992 0040 5DF8047B 	 ldr r7,[sp],#4
+ 993              	.LCFI35:
+ 994              	 .cfi_restore 7
+ 995              	 .cfi_def_cfa_offset 0
+ 996 0044 7047     	 bx lr
+ 997              	 .cfi_endproc
+ 998              	.LFE143:
+ 1000 0046 00BF     	 .section .text.xEventGroupSetBits,"ax",%progbits
+ 1001              	 .align 2
+ 1002              	 .global xEventGroupSetBits
+ 1003              	 .thumb
+ 1004              	 .thumb_func
+ 1006              	xEventGroupSetBits:
+ 1007              	.LFB144:
+ 529:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 530:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 531:../Dave/Generated/FREERTOS/event_groups.c **** EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
+ 532:../Dave/Generated/FREERTOS/event_groups.c ****                                 const EventBits_t uxBitsToSet )
+ 533:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 1008              	 .loc 1 533 0
+ 1009              	 .cfi_startproc
+ 1010              	 
+ 1011              	 
+ 1012 0000 80B5     	 push {r7,lr}
+ 1013              	.LCFI36:
+ 1014              	 .cfi_def_cfa_offset 8
+ 1015              	 .cfi_offset 7,-8
+ 1016              	 .cfi_offset 14,-4
+ 1017 0002 8EB0     	 sub sp,sp,#56
+ 1018              	.LCFI37:
+ 1019              	 .cfi_def_cfa_offset 64
+ 1020 0004 00AF     	 add r7,sp,#0
+ 1021              	.LCFI38:
+ 1022              	 .cfi_def_cfa_register 7
+ 1023 0006 7860     	 str r0,[r7,#4]
+ 1024 0008 3960     	 str r1,[r7]
+ 534:../Dave/Generated/FREERTOS/event_groups.c ****     ListItem_t * pxListItem, * pxNext;
+ 535:../Dave/Generated/FREERTOS/event_groups.c ****     ListItem_t const * pxListEnd;
+ 536:../Dave/Generated/FREERTOS/event_groups.c ****     List_t const * pxList;
+ 537:../Dave/Generated/FREERTOS/event_groups.c ****     EventBits_t uxBitsToClear = 0, uxBitsWaitedFor, uxControlBits;
+ 1025              	 .loc 1 537 0
+ 1026 000a 0023     	 movs r3,#0
+ 1027 000c 3B63     	 str r3,[r7,#48]
+ 538:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t * pxEventBits = xEventGroup;
+ 1028              	 .loc 1 538 0
+ 1029 000e 7B68     	 ldr r3,[r7,#4]
+ 1030 0010 BB62     	 str r3,[r7,#40]
+ 539:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xMatchFound = pdFALSE;
+ 1031              	 .loc 1 539 0
+ 1032 0012 0023     	 movs r3,#0
+ 1033 0014 FB62     	 str r3,[r7,#44]
+ 540:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 541:../Dave/Generated/FREERTOS/event_groups.c ****     /* Check the user is not attempting to set the bits used by the kernel
+ 542:../Dave/Generated/FREERTOS/event_groups.c ****      * itself. */
+ 543:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( xEventGroup );
+ 1034              	 .loc 1 543 0
+ 1035 0016 7B68     	 ldr r3,[r7,#4]
+ 1036 0018 002B     	 cmp r3,#0
+ 1037 001a 09D1     	 bne .L69
+ 1038              	.LBB64:
+ 1039              	.LBB65:
+ 197:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         (
+ 1040              	 .loc 2 197 0 discriminator 1
+ 1041              	
+ 1042 001c 4FF0FC03 	 mov r3,#252
+ 1043 0020 83F31188 	 msr basepri,r3
+ 1044 0024 BFF36F8F 	 isb 
+ 1045 0028 BFF34F8F 	 dsb 
+ 1046              	
+ 1047              	
+ 1048              	 .thumb
+ 1049 002c 3B61     	 str r3,[r7,#16]
+ 1050              	.L70:
+ 1051              	.LBE65:
+ 1052              	.LBE64:
+ 1053              	 .loc 1 543 0 discriminator 1
+ 1054 002e FEE7     	 b .L70
+ 1055              	.L69:
+ 544:../Dave/Generated/FREERTOS/event_groups.c ****     configASSERT( ( uxBitsToSet & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+ 1056              	 .loc 1 544 0
+ 1057 0030 3B68     	 ldr r3,[r7]
+ 1058 0032 03F07F43 	 and r3,r3,#-16777216
+ 1059 0036 002B     	 cmp r3,#0
+ 1060 0038 09D0     	 beq .L71
+ 1061              	.LBB66:
+ 1062              	.LBB67:
+ 197:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         (
+ 1063              	 .loc 2 197 0 discriminator 1
+ 1064              	
+ 1065 003a 4FF0FC03 	 mov r3,#252
+ 1066 003e 83F31188 	 msr basepri,r3
+ 1067 0042 BFF36F8F 	 isb 
+ 1068 0046 BFF34F8F 	 dsb 
+ 1069              	
+ 1070              	
+ 1071              	 .thumb
+ 1072 004a FB60     	 str r3,[r7,#12]
+ 1073              	.L72:
+ 1074              	.LBE67:
+ 1075              	.LBE66:
+ 1076              	 .loc 1 544 0 discriminator 2
+ 1077 004c FEE7     	 b .L72
+ 1078              	.L71:
+ 545:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 546:../Dave/Generated/FREERTOS/event_groups.c ****     pxList = &( pxEventBits->xTasksWaitingForBits );
+ 1079              	 .loc 1 546 0
+ 1080 004e BB6A     	 ldr r3,[r7,#40]
+ 1081 0050 0433     	 adds r3,r3,#4
+ 1082 0052 7B62     	 str r3,[r7,#36]
+ 547:../Dave/Generated/FREERTOS/event_groups.c ****     pxListEnd = listGET_END_MARKER( pxList ); /*lint !e826 !e740 !e9087 The mini list structure is 
+ 1083              	 .loc 1 547 0
+ 1084 0054 7B6A     	 ldr r3,[r7,#36]
+ 1085 0056 0833     	 adds r3,r3,#8
+ 1086 0058 3B62     	 str r3,[r7,#32]
+ 548:../Dave/Generated/FREERTOS/event_groups.c ****     vTaskSuspendAll();
+ 1087              	 .loc 1 548 0
+ 1088 005a FFF7FEFF 	 bl vTaskSuspendAll
+ 549:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 550:../Dave/Generated/FREERTOS/event_groups.c ****         traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet );
+ 551:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 552:../Dave/Generated/FREERTOS/event_groups.c ****         pxListItem = listGET_HEAD_ENTRY( pxList );
+ 1089              	 .loc 1 552 0
+ 1090 005e 7B6A     	 ldr r3,[r7,#36]
+ 1091 0060 DB68     	 ldr r3,[r3,#12]
+ 1092 0062 7B63     	 str r3,[r7,#52]
+ 553:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 554:../Dave/Generated/FREERTOS/event_groups.c ****         /* Set the bits. */
+ 555:../Dave/Generated/FREERTOS/event_groups.c ****         pxEventBits->uxEventBits |= uxBitsToSet;
+ 1093              	 .loc 1 555 0
+ 1094 0064 BB6A     	 ldr r3,[r7,#40]
+ 1095 0066 1A68     	 ldr r2,[r3]
+ 1096 0068 3B68     	 ldr r3,[r7]
+ 1097 006a 1A43     	 orrs r2,r2,r3
+ 1098 006c BB6A     	 ldr r3,[r7,#40]
+ 1099 006e 1A60     	 str r2,[r3]
+ 556:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 557:../Dave/Generated/FREERTOS/event_groups.c ****         /* See if the new bit value should unblock any tasks. */
+ 558:../Dave/Generated/FREERTOS/event_groups.c ****         while( pxListItem != pxListEnd )
+ 1100              	 .loc 1 558 0
+ 1101 0070 3CE0     	 b .L73
+ 1102              	.L78:
+ 559:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 560:../Dave/Generated/FREERTOS/event_groups.c ****             pxNext = listGET_NEXT( pxListItem );
+ 1103              	 .loc 1 560 0
+ 1104 0072 7B6B     	 ldr r3,[r7,#52]
+ 1105 0074 5B68     	 ldr r3,[r3,#4]
+ 1106 0076 FB61     	 str r3,[r7,#28]
+ 561:../Dave/Generated/FREERTOS/event_groups.c ****             uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
+ 1107              	 .loc 1 561 0
+ 1108 0078 7B6B     	 ldr r3,[r7,#52]
+ 1109 007a 1B68     	 ldr r3,[r3]
+ 1110 007c BB61     	 str r3,[r7,#24]
+ 562:../Dave/Generated/FREERTOS/event_groups.c ****             xMatchFound = pdFALSE;
+ 1111              	 .loc 1 562 0
+ 1112 007e 0023     	 movs r3,#0
+ 1113 0080 FB62     	 str r3,[r7,#44]
+ 563:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 564:../Dave/Generated/FREERTOS/event_groups.c ****             /* Split the bits waited for from the control bits. */
+ 565:../Dave/Generated/FREERTOS/event_groups.c ****             uxControlBits = uxBitsWaitedFor & eventEVENT_BITS_CONTROL_BYTES;
+ 1114              	 .loc 1 565 0
+ 1115 0082 BB69     	 ldr r3,[r7,#24]
+ 1116 0084 03F07F43 	 and r3,r3,#-16777216
+ 1117 0088 7B61     	 str r3,[r7,#20]
+ 566:../Dave/Generated/FREERTOS/event_groups.c ****             uxBitsWaitedFor &= ~eventEVENT_BITS_CONTROL_BYTES;
+ 1118              	 .loc 1 566 0
+ 1119 008a BB69     	 ldr r3,[r7,#24]
+ 1120 008c 23F07F43 	 bic r3,r3,#-16777216
+ 1121 0090 BB61     	 str r3,[r7,#24]
+ 567:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 568:../Dave/Generated/FREERTOS/event_groups.c ****             if( ( uxControlBits & eventWAIT_FOR_ALL_BITS ) == ( EventBits_t ) 0 )
+ 1122              	 .loc 1 568 0
+ 1123 0092 7B69     	 ldr r3,[r7,#20]
+ 1124 0094 03F08063 	 and r3,r3,#67108864
+ 1125 0098 002B     	 cmp r3,#0
+ 1126 009a 08D1     	 bne .L74
+ 569:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 570:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Just looking for single bit being set. */
+ 571:../Dave/Generated/FREERTOS/event_groups.c ****                 if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) != ( EventBits_t ) 0 )
+ 1127              	 .loc 1 571 0
+ 1128 009c BB6A     	 ldr r3,[r7,#40]
+ 1129 009e 1A68     	 ldr r2,[r3]
+ 1130 00a0 BB69     	 ldr r3,[r7,#24]
+ 1131 00a2 1340     	 ands r3,r3,r2
+ 1132 00a4 002B     	 cmp r3,#0
+ 1133 00a6 0BD0     	 beq .L75
+ 572:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 573:../Dave/Generated/FREERTOS/event_groups.c ****                     xMatchFound = pdTRUE;
+ 1134              	 .loc 1 573 0
+ 1135 00a8 0123     	 movs r3,#1
+ 1136 00aa FB62     	 str r3,[r7,#44]
+ 1137 00ac 08E0     	 b .L75
+ 1138              	.L74:
+ 574:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 575:../Dave/Generated/FREERTOS/event_groups.c ****                 else
+ 576:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 577:../Dave/Generated/FREERTOS/event_groups.c ****                     mtCOVERAGE_TEST_MARKER();
+ 578:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 579:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 580:../Dave/Generated/FREERTOS/event_groups.c ****             else if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) == uxBitsWaitedFor )
+ 1139              	 .loc 1 580 0
+ 1140 00ae BB6A     	 ldr r3,[r7,#40]
+ 1141 00b0 1A68     	 ldr r2,[r3]
+ 1142 00b2 BB69     	 ldr r3,[r7,#24]
+ 1143 00b4 1A40     	 ands r2,r2,r3
+ 1144 00b6 BB69     	 ldr r3,[r7,#24]
+ 1145 00b8 9A42     	 cmp r2,r3
+ 1146 00ba 01D1     	 bne .L75
+ 581:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 582:../Dave/Generated/FREERTOS/event_groups.c ****                 /* All bits are set. */
+ 583:../Dave/Generated/FREERTOS/event_groups.c ****                 xMatchFound = pdTRUE;
+ 1147              	 .loc 1 583 0
+ 1148 00bc 0123     	 movs r3,#1
+ 1149 00be FB62     	 str r3,[r7,#44]
+ 1150              	.L75:
+ 584:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 585:../Dave/Generated/FREERTOS/event_groups.c ****             else
+ 586:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 587:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Need all bits to be set, but not all the bits were set. */
+ 588:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 589:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 590:../Dave/Generated/FREERTOS/event_groups.c ****             if( xMatchFound != pdFALSE )
+ 1151              	 .loc 1 590 0
+ 1152 00c0 FB6A     	 ldr r3,[r7,#44]
+ 1153 00c2 002B     	 cmp r3,#0
+ 1154 00c4 10D0     	 beq .L76
+ 591:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 592:../Dave/Generated/FREERTOS/event_groups.c ****                 /* The bits match.  Should the bits be cleared on exit? */
+ 593:../Dave/Generated/FREERTOS/event_groups.c ****                 if( ( uxControlBits & eventCLEAR_EVENTS_ON_EXIT_BIT ) != ( EventBits_t ) 0 )
+ 1155              	 .loc 1 593 0
+ 1156 00c6 7B69     	 ldr r3,[r7,#20]
+ 1157 00c8 03F08073 	 and r3,r3,#16777216
+ 1158 00cc 002B     	 cmp r3,#0
+ 1159 00ce 03D0     	 beq .L77
+ 594:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 595:../Dave/Generated/FREERTOS/event_groups.c ****                     uxBitsToClear |= uxBitsWaitedFor;
+ 1160              	 .loc 1 595 0
+ 1161 00d0 3A6B     	 ldr r2,[r7,#48]
+ 1162 00d2 BB69     	 ldr r3,[r7,#24]
+ 1163 00d4 1343     	 orrs r3,r3,r2
+ 1164 00d6 3B63     	 str r3,[r7,#48]
+ 1165              	.L77:
+ 596:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 597:../Dave/Generated/FREERTOS/event_groups.c ****                 else
+ 598:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 599:../Dave/Generated/FREERTOS/event_groups.c ****                     mtCOVERAGE_TEST_MARKER();
+ 600:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 601:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 602:../Dave/Generated/FREERTOS/event_groups.c ****                 /* Store the actual event flag value in the task's event list
+ 603:../Dave/Generated/FREERTOS/event_groups.c ****                  * item before removing the task from the event list.  The
+ 604:../Dave/Generated/FREERTOS/event_groups.c ****                  * eventUNBLOCKED_DUE_TO_BIT_SET bit is set so the task knows
+ 605:../Dave/Generated/FREERTOS/event_groups.c ****                  * that is was unblocked due to its required bits matching, rather
+ 606:../Dave/Generated/FREERTOS/event_groups.c ****                  * than because it timed out. */
+ 607:../Dave/Generated/FREERTOS/event_groups.c ****                 vTaskRemoveFromUnorderedEventList( pxListItem, pxEventBits->uxEventBits | eventUNBL
+ 1166              	 .loc 1 607 0
+ 1167 00d8 BB6A     	 ldr r3,[r7,#40]
+ 1168 00da 1B68     	 ldr r3,[r3]
+ 1169 00dc 43F00073 	 orr r3,r3,#33554432
+ 1170 00e0 786B     	 ldr r0,[r7,#52]
+ 1171 00e2 1946     	 mov r1,r3
+ 1172 00e4 FFF7FEFF 	 bl vTaskRemoveFromUnorderedEventList
+ 1173              	.L76:
+ 608:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 609:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 610:../Dave/Generated/FREERTOS/event_groups.c ****             /* Move onto the next list item.  Note pxListItem->pxNext is not
+ 611:../Dave/Generated/FREERTOS/event_groups.c ****              * used here as the list item may have been removed from the event list
+ 612:../Dave/Generated/FREERTOS/event_groups.c ****              * and inserted into the ready/pending reading list. */
+ 613:../Dave/Generated/FREERTOS/event_groups.c ****             pxListItem = pxNext;
+ 1174              	 .loc 1 613 0
+ 1175 00e8 FB69     	 ldr r3,[r7,#28]
+ 1176 00ea 7B63     	 str r3,[r7,#52]
+ 1177              	.L73:
+ 558:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 1178              	 .loc 1 558 0
+ 1179 00ec 7A6B     	 ldr r2,[r7,#52]
+ 1180 00ee 3B6A     	 ldr r3,[r7,#32]
+ 1181 00f0 9A42     	 cmp r2,r3
+ 1182 00f2 BED1     	 bne .L78
+ 614:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 615:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 616:../Dave/Generated/FREERTOS/event_groups.c ****         /* Clear any bits that matched when the eventCLEAR_EVENTS_ON_EXIT_BIT
+ 617:../Dave/Generated/FREERTOS/event_groups.c ****          * bit was set in the control word. */
+ 618:../Dave/Generated/FREERTOS/event_groups.c ****         pxEventBits->uxEventBits &= ~uxBitsToClear;
+ 1183              	 .loc 1 618 0
+ 1184 00f4 BB6A     	 ldr r3,[r7,#40]
+ 1185 00f6 1A68     	 ldr r2,[r3]
+ 1186 00f8 3B6B     	 ldr r3,[r7,#48]
+ 1187 00fa DB43     	 mvns r3,r3
+ 1188 00fc 1A40     	 ands r2,r2,r3
+ 1189 00fe BB6A     	 ldr r3,[r7,#40]
+ 1190 0100 1A60     	 str r2,[r3]
+ 619:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 620:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xTaskResumeAll();
+ 1191              	 .loc 1 620 0
+ 1192 0102 FFF7FEFF 	 bl xTaskResumeAll
+ 621:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 622:../Dave/Generated/FREERTOS/event_groups.c ****     return pxEventBits->uxEventBits;
+ 1193              	 .loc 1 622 0
+ 1194 0106 BB6A     	 ldr r3,[r7,#40]
+ 1195 0108 1B68     	 ldr r3,[r3]
+ 623:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 1196              	 .loc 1 623 0
+ 1197 010a 1846     	 mov r0,r3
+ 1198 010c 3837     	 adds r7,r7,#56
+ 1199              	.LCFI39:
+ 1200              	 .cfi_def_cfa_offset 8
+ 1201 010e BD46     	 mov sp,r7
+ 1202              	.LCFI40:
+ 1203              	 .cfi_def_cfa_register 13
+ 1204              	 
+ 1205 0110 80BD     	 pop {r7,pc}
+ 1206              	 .cfi_endproc
+ 1207              	.LFE144:
+ 1209 0112 00BF     	 .section .text.vEventGroupDelete,"ax",%progbits
+ 1210              	 .align 2
+ 1211              	 .global vEventGroupDelete
+ 1212              	 .thumb
+ 1213              	 .thumb_func
+ 1215              	vEventGroupDelete:
+ 1216              	.LFB145:
+ 624:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 625:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 626:../Dave/Generated/FREERTOS/event_groups.c **** void vEventGroupDelete( EventGroupHandle_t xEventGroup )
+ 627:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 1217              	 .loc 1 627 0
+ 1218              	 .cfi_startproc
+ 1219              	 
+ 1220              	 
+ 1221 0000 80B5     	 push {r7,lr}
+ 1222              	.LCFI41:
+ 1223              	 .cfi_def_cfa_offset 8
+ 1224              	 .cfi_offset 7,-8
+ 1225              	 .cfi_offset 14,-4
+ 1226 0002 86B0     	 sub sp,sp,#24
+ 1227              	.LCFI42:
+ 1228              	 .cfi_def_cfa_offset 32
+ 1229 0004 00AF     	 add r7,sp,#0
+ 1230              	.LCFI43:
+ 1231              	 .cfi_def_cfa_register 7
+ 1232 0006 7860     	 str r0,[r7,#4]
+ 628:../Dave/Generated/FREERTOS/event_groups.c ****     EventGroup_t * pxEventBits = xEventGroup;
+ 1233              	 .loc 1 628 0
+ 1234 0008 7B68     	 ldr r3,[r7,#4]
+ 1235 000a 7B61     	 str r3,[r7,#20]
+ 629:../Dave/Generated/FREERTOS/event_groups.c ****     const List_t * pxTasksWaitingForBits = &( pxEventBits->xTasksWaitingForBits );
+ 1236              	 .loc 1 629 0
+ 1237 000c 7B69     	 ldr r3,[r7,#20]
+ 1238 000e 0433     	 adds r3,r3,#4
+ 1239 0010 3B61     	 str r3,[r7,#16]
+ 630:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 631:../Dave/Generated/FREERTOS/event_groups.c ****     vTaskSuspendAll();
+ 1240              	 .loc 1 631 0
+ 1241 0012 FFF7FEFF 	 bl vTaskSuspendAll
+ 632:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 633:../Dave/Generated/FREERTOS/event_groups.c ****         traceEVENT_GROUP_DELETE( xEventGroup );
+ 634:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 635:../Dave/Generated/FREERTOS/event_groups.c ****         while( listCURRENT_LIST_LENGTH( pxTasksWaitingForBits ) > ( UBaseType_t ) 0 )
+ 1242              	 .loc 1 635 0
+ 1243 0016 16E0     	 b .L81
+ 1244              	.L84:
+ 636:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 637:../Dave/Generated/FREERTOS/event_groups.c ****             /* Unblock the task, returning 0 as the event list is being deleted
+ 638:../Dave/Generated/FREERTOS/event_groups.c ****              * and cannot therefore have any bits set. */
+ 639:../Dave/Generated/FREERTOS/event_groups.c ****             configASSERT( pxTasksWaitingForBits->xListEnd.pxNext != ( const ListItem_t * ) &( pxTas
+ 1245              	 .loc 1 639 0
+ 1246 0018 3B69     	 ldr r3,[r7,#16]
+ 1247 001a DA68     	 ldr r2,[r3,#12]
+ 1248 001c 3B69     	 ldr r3,[r7,#16]
+ 1249 001e 0833     	 adds r3,r3,#8
+ 1250 0020 9A42     	 cmp r2,r3
+ 1251 0022 09D1     	 bne .L82
+ 1252              	.LBB68:
+ 1253              	.LBB69:
+ 197:C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Dave/Generated/FREERTOS/portable/GCC\portmacro.h ****         (
+ 1254              	 .loc 2 197 0 discriminator 1
+ 1255              	
+ 1256 0024 4FF0FC03 	 mov r3,#252
+ 1257 0028 83F31188 	 msr basepri,r3
+ 1258 002c BFF36F8F 	 isb 
+ 1259 0030 BFF34F8F 	 dsb 
+ 1260              	
+ 1261              	
+ 1262              	 .thumb
+ 1263 0034 FB60     	 str r3,[r7,#12]
+ 1264              	.L83:
+ 1265              	.LBE69:
+ 1266              	.LBE68:
+ 1267              	 .loc 1 639 0 discriminator 1
+ 1268 0036 FEE7     	 b .L83
+ 1269              	.L82:
+ 640:../Dave/Generated/FREERTOS/event_groups.c ****             vTaskRemoveFromUnorderedEventList( pxTasksWaitingForBits->xListEnd.pxNext, eventUNBLOCK
+ 1270              	 .loc 1 640 0
+ 1271 0038 3B69     	 ldr r3,[r7,#16]
+ 1272 003a DB68     	 ldr r3,[r3,#12]
+ 1273 003c 1846     	 mov r0,r3
+ 1274 003e 4FF00071 	 mov r1,#33554432
+ 1275 0042 FFF7FEFF 	 bl vTaskRemoveFromUnorderedEventList
+ 1276              	.L81:
+ 635:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 1277              	 .loc 1 635 0
+ 1278 0046 3B69     	 ldr r3,[r7,#16]
+ 1279 0048 1B68     	 ldr r3,[r3]
+ 1280 004a 002B     	 cmp r3,#0
+ 1281 004c E4D1     	 bne .L84
+ 641:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 642:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 643:../Dave/Generated/FREERTOS/event_groups.c ****         #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 )
+ 644:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 645:../Dave/Generated/FREERTOS/event_groups.c ****                 /* The event group can only have been allocated dynamically - free
+ 646:../Dave/Generated/FREERTOS/event_groups.c ****                  * it again. */
+ 647:../Dave/Generated/FREERTOS/event_groups.c ****                 vPortFree( pxEventBits );
+ 648:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 649:../Dave/Generated/FREERTOS/event_groups.c ****         #elif ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1
+ 650:../Dave/Generated/FREERTOS/event_groups.c ****             {
+ 651:../Dave/Generated/FREERTOS/event_groups.c ****                 /* The event group could have been allocated statically or
+ 652:../Dave/Generated/FREERTOS/event_groups.c ****                  * dynamically, so check before attempting to free the memory. */
+ 653:../Dave/Generated/FREERTOS/event_groups.c ****                 if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+ 1282              	 .loc 1 653 0
+ 1283 004e 7B69     	 ldr r3,[r7,#20]
+ 1284 0050 1B7F     	 ldrb r3,[r3,#28]
+ 1285 0052 002B     	 cmp r3,#0
+ 1286 0054 02D1     	 bne .L85
+ 654:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 655:../Dave/Generated/FREERTOS/event_groups.c ****                     vPortFree( pxEventBits );
+ 1287              	 .loc 1 655 0
+ 1288 0056 7869     	 ldr r0,[r7,#20]
+ 1289 0058 FFF7FEFF 	 bl vPortFree
+ 1290              	.L85:
+ 656:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 657:../Dave/Generated/FREERTOS/event_groups.c ****                 else
+ 658:../Dave/Generated/FREERTOS/event_groups.c ****                 {
+ 659:../Dave/Generated/FREERTOS/event_groups.c ****                     mtCOVERAGE_TEST_MARKER();
+ 660:../Dave/Generated/FREERTOS/event_groups.c ****                 }
+ 661:../Dave/Generated/FREERTOS/event_groups.c ****             }
+ 662:../Dave/Generated/FREERTOS/event_groups.c ****         #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+ 663:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 664:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xTaskResumeAll();
+ 1291              	 .loc 1 664 0
+ 1292 005c FFF7FEFF 	 bl xTaskResumeAll
+ 665:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 1293              	 .loc 1 665 0
+ 1294 0060 1837     	 adds r7,r7,#24
+ 1295              	.LCFI44:
+ 1296              	 .cfi_def_cfa_offset 8
+ 1297 0062 BD46     	 mov sp,r7
+ 1298              	.LCFI45:
+ 1299              	 .cfi_def_cfa_register 13
+ 1300              	 
+ 1301 0064 80BD     	 pop {r7,pc}
+ 1302              	 .cfi_endproc
+ 1303              	.LFE145:
+ 1305 0066 00BF     	 .section .text.vEventGroupSetBitsCallback,"ax",%progbits
+ 1306              	 .align 2
+ 1307              	 .global vEventGroupSetBitsCallback
+ 1308              	 .thumb
+ 1309              	 .thumb_func
+ 1311              	vEventGroupSetBitsCallback:
+ 1312              	.LFB146:
+ 666:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 667:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 668:../Dave/Generated/FREERTOS/event_groups.c **** /* For internal use only - execute a 'set bits' command that was pended from
+ 669:../Dave/Generated/FREERTOS/event_groups.c ****  * an interrupt. */
+ 670:../Dave/Generated/FREERTOS/event_groups.c **** void vEventGroupSetBitsCallback( void * pvEventGroup,
+ 671:../Dave/Generated/FREERTOS/event_groups.c ****                                  const uint32_t ulBitsToSet )
+ 672:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 1313              	 .loc 1 672 0
+ 1314              	 .cfi_startproc
+ 1315              	 
+ 1316              	 
+ 1317 0000 80B5     	 push {r7,lr}
+ 1318              	.LCFI46:
+ 1319              	 .cfi_def_cfa_offset 8
+ 1320              	 .cfi_offset 7,-8
+ 1321              	 .cfi_offset 14,-4
+ 1322 0002 82B0     	 sub sp,sp,#8
+ 1323              	.LCFI47:
+ 1324              	 .cfi_def_cfa_offset 16
+ 1325 0004 00AF     	 add r7,sp,#0
+ 1326              	.LCFI48:
+ 1327              	 .cfi_def_cfa_register 7
+ 1328 0006 7860     	 str r0,[r7,#4]
+ 1329 0008 3960     	 str r1,[r7]
+ 673:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xEventGroupSetBits( pvEventGroup, ( EventBits_t ) ulBitsToSet ); /*lint !e9079 Can't a
+ 1330              	 .loc 1 673 0
+ 1331 000a 7868     	 ldr r0,[r7,#4]
+ 1332 000c 3968     	 ldr r1,[r7]
+ 1333 000e FFF7FEFF 	 bl xEventGroupSetBits
+ 674:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 1334              	 .loc 1 674 0
+ 1335 0012 0837     	 adds r7,r7,#8
+ 1336              	.LCFI49:
+ 1337              	 .cfi_def_cfa_offset 8
+ 1338 0014 BD46     	 mov sp,r7
+ 1339              	.LCFI50:
+ 1340              	 .cfi_def_cfa_register 13
+ 1341              	 
+ 1342 0016 80BD     	 pop {r7,pc}
+ 1343              	 .cfi_endproc
+ 1344              	.LFE146:
+ 1346              	 .section .text.vEventGroupClearBitsCallback,"ax",%progbits
+ 1347              	 .align 2
+ 1348              	 .global vEventGroupClearBitsCallback
+ 1349              	 .thumb
+ 1350              	 .thumb_func
+ 1352              	vEventGroupClearBitsCallback:
+ 1353              	.LFB147:
+ 675:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 676:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 677:../Dave/Generated/FREERTOS/event_groups.c **** /* For internal use only - execute a 'clear bits' command that was pended from
+ 678:../Dave/Generated/FREERTOS/event_groups.c ****  * an interrupt. */
+ 679:../Dave/Generated/FREERTOS/event_groups.c **** void vEventGroupClearBitsCallback( void * pvEventGroup,
+ 680:../Dave/Generated/FREERTOS/event_groups.c ****                                    const uint32_t ulBitsToClear )
+ 681:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 1354              	 .loc 1 681 0
+ 1355              	 .cfi_startproc
+ 1356              	 
+ 1357              	 
+ 1358 0000 80B5     	 push {r7,lr}
+ 1359              	.LCFI51:
+ 1360              	 .cfi_def_cfa_offset 8
+ 1361              	 .cfi_offset 7,-8
+ 1362              	 .cfi_offset 14,-4
+ 1363 0002 82B0     	 sub sp,sp,#8
+ 1364              	.LCFI52:
+ 1365              	 .cfi_def_cfa_offset 16
+ 1366 0004 00AF     	 add r7,sp,#0
+ 1367              	.LCFI53:
+ 1368              	 .cfi_def_cfa_register 7
+ 1369 0006 7860     	 str r0,[r7,#4]
+ 1370 0008 3960     	 str r1,[r7]
+ 682:../Dave/Generated/FREERTOS/event_groups.c ****     ( void ) xEventGroupClearBits( pvEventGroup, ( EventBits_t ) ulBitsToClear ); /*lint !e9079 Can
+ 1371              	 .loc 1 682 0
+ 1372 000a 7868     	 ldr r0,[r7,#4]
+ 1373 000c 3968     	 ldr r1,[r7]
+ 1374 000e FFF7FEFF 	 bl xEventGroupClearBits
+ 683:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 1375              	 .loc 1 683 0
+ 1376 0012 0837     	 adds r7,r7,#8
+ 1377              	.LCFI54:
+ 1378              	 .cfi_def_cfa_offset 8
+ 1379 0014 BD46     	 mov sp,r7
+ 1380              	.LCFI55:
+ 1381              	 .cfi_def_cfa_register 13
+ 1382              	 
+ 1383 0016 80BD     	 pop {r7,pc}
+ 1384              	 .cfi_endproc
+ 1385              	.LFE147:
+ 1387              	 .section .text.prvTestWaitCondition,"ax",%progbits
+ 1388              	 .align 2
+ 1389              	 .thumb
+ 1390              	 .thumb_func
+ 1392              	prvTestWaitCondition:
+ 1393              	.LFB148:
+ 684:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 685:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 686:../Dave/Generated/FREERTOS/event_groups.c **** static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
+ 687:../Dave/Generated/FREERTOS/event_groups.c ****                                         const EventBits_t uxBitsToWaitFor,
+ 688:../Dave/Generated/FREERTOS/event_groups.c ****                                         const BaseType_t xWaitForAllBits )
+ 689:../Dave/Generated/FREERTOS/event_groups.c **** {
+ 1394              	 .loc 1 689 0
+ 1395              	 .cfi_startproc
+ 1396              	 
+ 1397              	 
+ 1398              	 
+ 1399 0000 80B4     	 push {r7}
+ 1400              	.LCFI56:
+ 1401              	 .cfi_def_cfa_offset 4
+ 1402              	 .cfi_offset 7,-4
+ 1403 0002 87B0     	 sub sp,sp,#28
+ 1404              	.LCFI57:
+ 1405              	 .cfi_def_cfa_offset 32
+ 1406 0004 00AF     	 add r7,sp,#0
+ 1407              	.LCFI58:
+ 1408              	 .cfi_def_cfa_register 7
+ 1409 0006 F860     	 str r0,[r7,#12]
+ 1410 0008 B960     	 str r1,[r7,#8]
+ 1411 000a 7A60     	 str r2,[r7,#4]
+ 690:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xWaitConditionMet = pdFALSE;
+ 1412              	 .loc 1 690 0
+ 1413 000c 0023     	 movs r3,#0
+ 1414 000e 7B61     	 str r3,[r7,#20]
+ 691:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 692:../Dave/Generated/FREERTOS/event_groups.c ****     if( xWaitForAllBits == pdFALSE )
+ 1415              	 .loc 1 692 0
+ 1416 0010 7B68     	 ldr r3,[r7,#4]
+ 1417 0012 002B     	 cmp r3,#0
+ 1418 0014 07D1     	 bne .L89
+ 693:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 694:../Dave/Generated/FREERTOS/event_groups.c ****         /* Task only has to wait for one bit within uxBitsToWaitFor to be
+ 695:../Dave/Generated/FREERTOS/event_groups.c ****          * set.  Is one already set? */
+ 696:../Dave/Generated/FREERTOS/event_groups.c ****         if( ( uxCurrentEventBits & uxBitsToWaitFor ) != ( EventBits_t ) 0 )
+ 1419              	 .loc 1 696 0
+ 1420 0016 FA68     	 ldr r2,[r7,#12]
+ 1421 0018 BB68     	 ldr r3,[r7,#8]
+ 1422 001a 1340     	 ands r3,r3,r2
+ 1423 001c 002B     	 cmp r3,#0
+ 1424 001e 0AD0     	 beq .L90
+ 697:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 698:../Dave/Generated/FREERTOS/event_groups.c ****             xWaitConditionMet = pdTRUE;
+ 1425              	 .loc 1 698 0
+ 1426 0020 0123     	 movs r3,#1
+ 1427 0022 7B61     	 str r3,[r7,#20]
+ 1428 0024 07E0     	 b .L90
+ 1429              	.L89:
+ 699:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 700:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 701:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 702:../Dave/Generated/FREERTOS/event_groups.c ****             mtCOVERAGE_TEST_MARKER();
+ 703:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 704:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 705:../Dave/Generated/FREERTOS/event_groups.c ****     else
+ 706:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 707:../Dave/Generated/FREERTOS/event_groups.c ****         /* Task has to wait for all the bits in uxBitsToWaitFor to be set.
+ 708:../Dave/Generated/FREERTOS/event_groups.c ****          * Are they set already? */
+ 709:../Dave/Generated/FREERTOS/event_groups.c ****         if( ( uxCurrentEventBits & uxBitsToWaitFor ) == uxBitsToWaitFor )
+ 1430              	 .loc 1 709 0
+ 1431 0026 FA68     	 ldr r2,[r7,#12]
+ 1432 0028 BB68     	 ldr r3,[r7,#8]
+ 1433 002a 1A40     	 ands r2,r2,r3
+ 1434 002c BB68     	 ldr r3,[r7,#8]
+ 1435 002e 9A42     	 cmp r2,r3
+ 1436 0030 01D1     	 bne .L90
+ 710:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 711:../Dave/Generated/FREERTOS/event_groups.c ****             xWaitConditionMet = pdTRUE;
+ 1437              	 .loc 1 711 0
+ 1438 0032 0123     	 movs r3,#1
+ 1439 0034 7B61     	 str r3,[r7,#20]
+ 1440              	.L90:
+ 712:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 713:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 714:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 715:../Dave/Generated/FREERTOS/event_groups.c ****             mtCOVERAGE_TEST_MARKER();
+ 716:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 717:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 718:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 719:../Dave/Generated/FREERTOS/event_groups.c ****     return xWaitConditionMet;
+ 1441              	 .loc 1 719 0
+ 1442 0036 7B69     	 ldr r3,[r7,#20]
+ 720:../Dave/Generated/FREERTOS/event_groups.c **** }
+ 1443              	 .loc 1 720 0
+ 1444 0038 1846     	 mov r0,r3
+ 1445 003a 1C37     	 adds r7,r7,#28
+ 1446              	.LCFI59:
+ 1447              	 .cfi_def_cfa_offset 4
+ 1448 003c BD46     	 mov sp,r7
+ 1449              	.LCFI60:
+ 1450              	 .cfi_def_cfa_register 13
+ 1451              	 
+ 1452 003e 5DF8047B 	 ldr r7,[sp],#4
+ 1453              	.LCFI61:
+ 1454              	 .cfi_restore 7
+ 1455              	 .cfi_def_cfa_offset 0
+ 1456 0042 7047     	 bx lr
+ 1457              	 .cfi_endproc
+ 1458              	.LFE148:
+ 1460              	 .section .text.xEventGroupSetBitsFromISR,"ax",%progbits
+ 1461              	 .align 2
+ 1462              	 .global xEventGroupSetBitsFromISR
+ 1463              	 .thumb
+ 1464              	 .thumb_func
+ 1466              	xEventGroupSetBitsFromISR:
+ 1467              	.LFB149:
+ 721:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 722:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 723:../Dave/Generated/FREERTOS/event_groups.c **** #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_T
+ 724:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 725:../Dave/Generated/FREERTOS/event_groups.c ****     BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
+ 726:../Dave/Generated/FREERTOS/event_groups.c ****                                           const EventBits_t uxBitsToSet,
+ 727:../Dave/Generated/FREERTOS/event_groups.c ****                                           BaseType_t * pxHigherPriorityTaskWoken )
+ 728:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 1468              	 .loc 1 728 0
+ 1469              	 .cfi_startproc
+ 1470              	 
+ 1471              	 
+ 1472 0000 80B5     	 push {r7,lr}
+ 1473              	.LCFI62:
+ 1474              	 .cfi_def_cfa_offset 8
+ 1475              	 .cfi_offset 7,-8
+ 1476              	 .cfi_offset 14,-4
+ 1477 0002 86B0     	 sub sp,sp,#24
+ 1478              	.LCFI63:
+ 1479              	 .cfi_def_cfa_offset 32
+ 1480 0004 00AF     	 add r7,sp,#0
+ 1481              	.LCFI64:
+ 1482              	 .cfi_def_cfa_register 7
+ 1483 0006 F860     	 str r0,[r7,#12]
+ 1484 0008 B960     	 str r1,[r7,#8]
+ 1485 000a 7A60     	 str r2,[r7,#4]
+ 729:../Dave/Generated/FREERTOS/event_groups.c ****         BaseType_t xReturn;
+ 730:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 731:../Dave/Generated/FREERTOS/event_groups.c ****         traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet );
+ 732:../Dave/Generated/FREERTOS/event_groups.c ****         xReturn = xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) xEventGroup
+ 1486              	 .loc 1 732 0
+ 1487 000c 0548     	 ldr r0,.L94
+ 1488 000e F968     	 ldr r1,[r7,#12]
+ 1489 0010 BA68     	 ldr r2,[r7,#8]
+ 1490 0012 7B68     	 ldr r3,[r7,#4]
+ 1491 0014 FFF7FEFF 	 bl xTimerPendFunctionCallFromISR
+ 1492 0018 7861     	 str r0,[r7,#20]
+ 733:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 734:../Dave/Generated/FREERTOS/event_groups.c ****         return xReturn;
+ 1493              	 .loc 1 734 0
+ 1494 001a 7B69     	 ldr r3,[r7,#20]
+ 735:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 1495              	 .loc 1 735 0
+ 1496 001c 1846     	 mov r0,r3
+ 1497 001e 1837     	 adds r7,r7,#24
+ 1498              	.LCFI65:
+ 1499              	 .cfi_def_cfa_offset 8
+ 1500 0020 BD46     	 mov sp,r7
+ 1501              	.LCFI66:
+ 1502              	 .cfi_def_cfa_register 13
+ 1503              	 
+ 1504 0022 80BD     	 pop {r7,pc}
+ 1505              	.L95:
+ 1506              	 .align 2
+ 1507              	.L94:
+ 1508 0024 00000000 	 .word vEventGroupSetBitsCallback
+ 1509              	 .cfi_endproc
+ 1510              	.LFE149:
+ 1512              	 .section .text.uxEventGroupGetNumber,"ax",%progbits
+ 1513              	 .align 2
+ 1514              	 .global uxEventGroupGetNumber
+ 1515              	 .thumb
+ 1516              	 .thumb_func
+ 1518              	uxEventGroupGetNumber:
+ 1519              	.LFB150:
+ 736:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 737:../Dave/Generated/FREERTOS/event_groups.c **** #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( co
+ 738:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 739:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 740:../Dave/Generated/FREERTOS/event_groups.c **** #if ( configUSE_TRACE_FACILITY == 1 )
+ 741:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 742:../Dave/Generated/FREERTOS/event_groups.c ****     UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
+ 743:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 1520              	 .loc 1 743 0
+ 1521              	 .cfi_startproc
+ 1522              	 
+ 1523              	 
+ 1524              	 
+ 1525 0000 80B4     	 push {r7}
+ 1526              	.LCFI67:
+ 1527              	 .cfi_def_cfa_offset 4
+ 1528              	 .cfi_offset 7,-4
+ 1529 0002 85B0     	 sub sp,sp,#20
+ 1530              	.LCFI68:
+ 1531              	 .cfi_def_cfa_offset 24
+ 1532 0004 00AF     	 add r7,sp,#0
+ 1533              	.LCFI69:
+ 1534              	 .cfi_def_cfa_register 7
+ 1535 0006 7860     	 str r0,[r7,#4]
+ 744:../Dave/Generated/FREERTOS/event_groups.c ****         UBaseType_t xReturn;
+ 745:../Dave/Generated/FREERTOS/event_groups.c ****         EventGroup_t const * pxEventBits = ( EventGroup_t * ) xEventGroup; /*lint !e9087 !e9079 Eve
+ 1536              	 .loc 1 745 0
+ 1537 0008 7B68     	 ldr r3,[r7,#4]
+ 1538 000a BB60     	 str r3,[r7,#8]
+ 746:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 747:../Dave/Generated/FREERTOS/event_groups.c ****         if( xEventGroup == NULL )
+ 1539              	 .loc 1 747 0
+ 1540 000c 7B68     	 ldr r3,[r7,#4]
+ 1541 000e 002B     	 cmp r3,#0
+ 1542 0010 02D1     	 bne .L97
+ 748:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 749:../Dave/Generated/FREERTOS/event_groups.c ****             xReturn = 0;
+ 1543              	 .loc 1 749 0
+ 1544 0012 0023     	 movs r3,#0
+ 1545 0014 FB60     	 str r3,[r7,#12]
+ 1546 0016 02E0     	 b .L98
+ 1547              	.L97:
+ 750:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 751:../Dave/Generated/FREERTOS/event_groups.c ****         else
+ 752:../Dave/Generated/FREERTOS/event_groups.c ****         {
+ 753:../Dave/Generated/FREERTOS/event_groups.c ****             xReturn = pxEventBits->uxEventGroupNumber;
+ 1548              	 .loc 1 753 0
+ 1549 0018 BB68     	 ldr r3,[r7,#8]
+ 1550 001a 9B69     	 ldr r3,[r3,#24]
+ 1551 001c FB60     	 str r3,[r7,#12]
+ 1552              	.L98:
+ 754:../Dave/Generated/FREERTOS/event_groups.c ****         }
+ 755:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 756:../Dave/Generated/FREERTOS/event_groups.c ****         return xReturn;
+ 1553              	 .loc 1 756 0
+ 1554 001e FB68     	 ldr r3,[r7,#12]
+ 757:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 1555              	 .loc 1 757 0
+ 1556 0020 1846     	 mov r0,r3
+ 1557 0022 1437     	 adds r7,r7,#20
+ 1558              	.LCFI70:
+ 1559              	 .cfi_def_cfa_offset 4
+ 1560 0024 BD46     	 mov sp,r7
+ 1561              	.LCFI71:
+ 1562              	 .cfi_def_cfa_register 13
+ 1563              	 
+ 1564 0026 5DF8047B 	 ldr r7,[sp],#4
+ 1565              	.LCFI72:
+ 1566              	 .cfi_restore 7
+ 1567              	 .cfi_def_cfa_offset 0
+ 1568 002a 7047     	 bx lr
+ 1569              	 .cfi_endproc
+ 1570              	.LFE150:
+ 1572              	 .section .text.vEventGroupSetNumber,"ax",%progbits
+ 1573              	 .align 2
+ 1574              	 .global vEventGroupSetNumber
+ 1575              	 .thumb
+ 1576              	 .thumb_func
+ 1578              	vEventGroupSetNumber:
+ 1579              	.LFB151:
+ 758:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 759:../Dave/Generated/FREERTOS/event_groups.c **** #endif /* configUSE_TRACE_FACILITY */
+ 760:../Dave/Generated/FREERTOS/event_groups.c **** /*-----------------------------------------------------------*/
+ 761:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 762:../Dave/Generated/FREERTOS/event_groups.c **** #if ( configUSE_TRACE_FACILITY == 1 )
+ 763:../Dave/Generated/FREERTOS/event_groups.c **** 
+ 764:../Dave/Generated/FREERTOS/event_groups.c ****     void vEventGroupSetNumber( void * xEventGroup,
+ 765:../Dave/Generated/FREERTOS/event_groups.c ****                                UBaseType_t uxEventGroupNumber )
+ 766:../Dave/Generated/FREERTOS/event_groups.c ****     {
+ 1580              	 .loc 1 766 0
+ 1581              	 .cfi_startproc
+ 1582              	 
+ 1583              	 
+ 1584              	 
+ 1585 0000 80B4     	 push {r7}
+ 1586              	.LCFI73:
+ 1587              	 .cfi_def_cfa_offset 4
+ 1588              	 .cfi_offset 7,-4
+ 1589 0002 83B0     	 sub sp,sp,#12
+ 1590              	.LCFI74:
+ 1591              	 .cfi_def_cfa_offset 16
+ 1592 0004 00AF     	 add r7,sp,#0
+ 1593              	.LCFI75:
+ 1594              	 .cfi_def_cfa_register 7
+ 1595 0006 7860     	 str r0,[r7,#4]
+ 1596 0008 3960     	 str r1,[r7]
+ 767:../Dave/Generated/FREERTOS/event_groups.c ****         ( ( EventGroup_t * ) xEventGroup )->uxEventGroupNumber = uxEventGroupNumber; /*lint !e9087 
+ 1597              	 .loc 1 767 0
+ 1598 000a 7B68     	 ldr r3,[r7,#4]
+ 1599 000c 3A68     	 ldr r2,[r7]
+ 1600 000e 9A61     	 str r2,[r3,#24]
+ 768:../Dave/Generated/FREERTOS/event_groups.c ****     }
+ 1601              	 .loc 1 768 0
+ 1602 0010 0C37     	 adds r7,r7,#12
+ 1603              	.LCFI76:
+ 1604              	 .cfi_def_cfa_offset 4
+ 1605 0012 BD46     	 mov sp,r7
+ 1606              	.LCFI77:
+ 1607              	 .cfi_def_cfa_register 13
+ 1608              	 
+ 1609 0014 5DF8047B 	 ldr r7,[sp],#4
+ 1610              	.LCFI78:
+ 1611              	 .cfi_restore 7
+ 1612              	 .cfi_def_cfa_offset 0
+ 1613 0018 7047     	 bx lr
+ 1614              	 .cfi_endproc
+ 1615              	.LFE151:
+ 1617 001a 00BF     	 .text
+ 1618              	.Letext0:
+ 1619              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\lib\\gcc\\arm-none-eabi\\4.9.3\\include\\stddef.h"
+ 1620              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1621              	 .file 5 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 1622              	 .file 6 "../Dave/Generated/FREERTOS/FreeRTOS.h"
+ 1623              	 .file 7 "../Dave/Generated/FREERTOS/list.h"
+ 1624              	 .file 8 "../Dave/Generated/FREERTOS/event_groups.h"
+ 1625              	 .file 9 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 1626              	 .file 10 "C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/workspace/xmc4800-CE/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 event_groups.c
+    {standard input}:20     .text.xEventGroupCreateStatic:00000000 $t
+    {standard input}:25     .text.xEventGroupCreateStatic:00000000 xEventGroupCreateStatic
+    {standard input}:131    .text.xEventGroupCreate:00000000 $t
+    {standard input}:136    .text.xEventGroupCreate:00000000 xEventGroupCreate
+    {standard input}:191    .text.xEventGroupSync:00000000 $t
+    {standard input}:196    .text.xEventGroupSync:00000000 xEventGroupSync
+    {standard input}:1006   .text.xEventGroupSetBits:00000000 xEventGroupSetBits
+    {standard input}:448    .text.xEventGroupSync:00000154 $d
+    {standard input}:453    .text.xEventGroupWaitBits:00000000 $t
+    {standard input}:458    .text.xEventGroupWaitBits:00000000 xEventGroupWaitBits
+    {standard input}:1392   .text.prvTestWaitCondition:00000000 prvTestWaitCondition
+    {standard input}:759    .text.xEventGroupWaitBits:00000194 $d
+    {standard input}:764    .text.xEventGroupClearBits:00000000 $t
+    {standard input}:769    .text.xEventGroupClearBits:00000000 xEventGroupClearBits
+    {standard input}:868    .text.xEventGroupClearBitsFromISR:00000000 $t
+    {standard input}:873    .text.xEventGroupClearBitsFromISR:00000000 xEventGroupClearBitsFromISR
+    {standard input}:914    .text.xEventGroupClearBitsFromISR:00000024 $d
+    {standard input}:1352   .text.vEventGroupClearBitsCallback:00000000 vEventGroupClearBitsCallback
+    {standard input}:919    .text.xEventGroupGetBitsFromISR:00000000 $t
+    {standard input}:924    .text.xEventGroupGetBitsFromISR:00000000 xEventGroupGetBitsFromISR
+    {standard input}:1001   .text.xEventGroupSetBits:00000000 $t
+    {standard input}:1210   .text.vEventGroupDelete:00000000 $t
+    {standard input}:1215   .text.vEventGroupDelete:00000000 vEventGroupDelete
+    {standard input}:1306   .text.vEventGroupSetBitsCallback:00000000 $t
+    {standard input}:1311   .text.vEventGroupSetBitsCallback:00000000 vEventGroupSetBitsCallback
+    {standard input}:1347   .text.vEventGroupClearBitsCallback:00000000 $t
+    {standard input}:1388   .text.prvTestWaitCondition:00000000 $t
+    {standard input}:1461   .text.xEventGroupSetBitsFromISR:00000000 $t
+    {standard input}:1466   .text.xEventGroupSetBitsFromISR:00000000 xEventGroupSetBitsFromISR
+    {standard input}:1508   .text.xEventGroupSetBitsFromISR:00000024 $d
+    {standard input}:1513   .text.uxEventGroupGetNumber:00000000 $t
+    {standard input}:1518   .text.uxEventGroupGetNumber:00000000 uxEventGroupGetNumber
+    {standard input}:1573   .text.vEventGroupSetNumber:00000000 $t
+    {standard input}:1578   .text.vEventGroupSetNumber:00000000 vEventGroupSetNumber
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+vListInitialise
+pvPortMalloc
+xTaskGetSchedulerState
+vTaskSuspendAll
+vTaskPlaceOnUnorderedEventList
+xTaskResumeAll
+uxTaskResetEventItemValue
+vPortEnterCritical
+vPortExitCritical
+xTimerPendFunctionCallFromISR
+vTaskRemoveFromUnorderedEventList
+vPortFree
